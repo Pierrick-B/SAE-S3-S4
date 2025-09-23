@@ -2,20 +2,22 @@ name: Sync Repository to GitLab
 
 on:
   push:
-    branches: [main]  # adapte selon ta branche principale
+    branches: [main]
 
 jobs:
   sync:
-    runs-on: self-hosted  # utilise ton runner self-hosted Windows
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # nécessaire pour récupérer tout l'historique git
-    - name: Sync to GitLab
-      uses: keninkujovic/gitlab-sync@2.1.0
-      shell: pwsh  # force l'utilisation de PowerShell sous Windows
-      with:
-        gitlab_url: ${{ secrets.GITLAB_URL }}
-        username: ${{ secrets.USERNAME }}
-        gitlab_pat: ${{ secrets.GITLAB_PAT }}
-        force_push: false  # à true si tu veux forcer l'écrasement sur GitLab
+        fetch-depth: 0
+    - name: Sync to GitLab via PowerShell
+      shell: pwsh
+      run: |
+        $gitlab_url = "${{ secrets.GITLAB_URL }}"
+        $username = "${{ secrets.USERNAME }}"
+        $token = "${{ secrets.GITLAB_PAT }}"
+        $branch = "${{ github.ref }}" -replace 'refs/heads/', ''
+
+        git remote add gitlab https://$username:$token@${gitlab_url#https://}
+        git push gitlab $branch

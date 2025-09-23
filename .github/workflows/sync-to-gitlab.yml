@@ -13,6 +13,7 @@ jobs:
         fetch-depth: 0  # nécessaire pour récupérer tout l'historique git
     - name: Sync to GitLab
       uses: keninkujovic/gitlab-sync@2.1.0
+      shell: pwsh  # force l'utilisation de PowerShell sous Windows
       with:
         gitlab_url: ${{ secrets.GITLAB_URL }}
         username: ${{ secrets.USERNAME }}

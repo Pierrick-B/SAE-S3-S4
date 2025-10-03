@@ -1,11 +1,12 @@
-<script setup></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+    <NavBar title="lieu"></NavBar>
+    <Footer></Footer>
 </template>
 
-<style scoped></style>
+<script setup>
+import NavBar from '@/components/NavBar.vue';
+import Footer from "@/components/Footer.vue";
+</script>
+
+<style scoped>
+</style>

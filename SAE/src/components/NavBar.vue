@@ -15,6 +15,13 @@ const props = defineProps({
 })
 </script>
 
+<style>
+body{
+  margin: 0;
+
+}
+</style>
+
 <style scoped>
 #navBar{
   background: aqua;
@@ -23,5 +30,9 @@ const props = defineProps({
 #navBar ul li{
   background: red;
   display: inline-block;
+}
+h1{
+  padding: 0;
+  margin: 0;
 }
 </style>

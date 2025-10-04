@@ -6,6 +6,7 @@ const props = defineProps({
 
 <template>
   <nav id="navBar">
+    <img src="/logo-placeholder.svg" alt="Logo" width="32" height="32">
     <h1>Test</h1>
     <ul>
       <li><a href="#">Page 1</a></li>
@@ -26,6 +27,9 @@ body{
 #navBar{
   background: aqua;
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 #navBar ul li{
   background: red;

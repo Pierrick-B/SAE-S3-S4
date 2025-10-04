@@ -1,3 +1,9 @@
+<script setup>
+const props = defineProps({
+  title: String
+})
+</script>
+
 <template>
   <nav id="navBar">
     <h1>Test</h1>
@@ -8,12 +14,6 @@
     </ul>
   </nav>
 </template>
-
-<script setup>
-const props = defineProps({
-  title: String
-})
-</script>
 
 <style>
 body{

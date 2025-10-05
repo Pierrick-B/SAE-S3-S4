@@ -1,17 +1,21 @@
 <script setup>
-const props = defineProps({
-  title: String
-})
+
+const pages = [
+  { id: 1, name: 'Accueil', href: '#' },
+  { id: 2, name: 'À propos', href: '#' },
+  { id: 3, name: 'Services', href: '#' },
+  { id: 4, name: 'Contact', href: '#' }
+]
 </script>
 
 <template>
   <nav id="navBar">
     <img src="/logo-placeholder.svg" alt="Logo" width="32" height="32">
     <h1>Test</h1>
-    <ul>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li>
-      <li><a href="#">Page 3</a></li>
+    <ul v-for="page in pages" :key="page.id">
+      <li>
+        <a :href="page.href">{{ page.name }}</a>
+      </li>
     </ul>
   </nav>
 </template>

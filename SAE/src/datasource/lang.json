@@ -1,0 +1,14 @@
+{
+    "titreTest": {
+        "fr": "C'est un titre test",
+        "en": "Is tittle test"
+    },
+    "test": {
+        "fr": "Bonjour",
+        "en": "Hello"
+    },
+    "test2": {
+        "fr": "merci",
+        "en": "thanks"
+    }
+}

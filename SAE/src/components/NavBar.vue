@@ -1,22 +1,27 @@
 <script setup>
+  import LanguageButton from "@/components/LanguageButton.vue";
+  import langue from "@/datasource/lang.json"
+  import { useLangStore } from "@/stores/langStore.js";
 
-const pages = [
-  { id: 1, name: 'Accueil', href: '#' },
-  { id: 2, name: 'À propos', href: '#' },
-  { id: 3, name: 'Services', href: '#' },
-  { id: 4, name: 'Contact', href: '#' }
-]
+  let lgButton = useLangStore();
+  const pages = [
+    { id: 1, name: 'Accueil', href: '#' },
+    { id: 2, name: 'À propos', href: '#' },
+    { id: 3, name: 'Services', href: '#' },
+    { id: 4, name: 'Contact', href: '#' }
+  ]
 </script>
 
 <template>
   <nav id="navBar">
     <img src="/logo-placeholder.svg" alt="Logo" width="32" height="32">
-    <h1>Test</h1>
+    <h1>Test {{langue.test[lgButton.language]}}</h1>
     <ul v-for="page in pages" :key="page.id">
       <li>
         <a :href="page.href">{{ page.name }}</a>
       </li>
     </ul>
+    <LanguageButton></LanguageButton>
   </nav>
 </template>
 

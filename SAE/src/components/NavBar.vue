@@ -14,38 +14,232 @@
 
 <template>
   <nav id="navBar">
-    <img src="/logo-placeholder.svg" alt="Logo" width="32" height="32">
-    <h1>Test {{langue.test[lgButton.language]}}</h1>
-    <ul v-for="page in pages" :key="page.id">
-      <li>
-        <a :href="page.href">{{ page.name }}</a>
-      </li>
-    </ul>
-    <LanguageButton></LanguageButton>
+    <div class="logo">
+      <img src="/logo-placeholder.svg" alt="Logo" width="48" height="48">
+    </div>
+    
+    <div class="nav-center">
+      <ul class="nav-links">
+        <li v-for="page in pages" :key="page.id">
+          <a :href="page.href">{{ page.name.toUpperCase() }}</a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="nav-right">
+      <button class="login-btn">LOGIN</button>
+      <LanguageButton></LanguageButton>
+    </div>
   </nav>
 </template>
 
 <style>
-body{
+body {
   margin: 0;
-
 }
 </style>
 
 <style scoped>
-#navBar{
-  background: aqua;
+#navBar {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  box-sizing: border-box;
+  position: relative;
 }
-#navBar ul li{
-  background: red;
+
+/* Logo à gauche */
+.logo {
+  flex-shrink: 0;
+}
+
+.logo img {
+  display: block;
+}
+
+/* Navbar centrée au milieu */
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 6rem);
+}
+
+.nav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0.8rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 50px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.nav-links li {
   display: inline-block;
 }
-h1{
-  padding: 0;
-  margin: 0;
+
+.nav-links a {
+  text-decoration: none;
+  color: #1a1a1a;
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.nav-links a:hover {
+  color: #666;
+}
+
+/* Section droite avec login et language */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+  max-width: fit-content;
+}
+
+.login-btn {
+  background: #1a1a1a;
+  color: #ffffff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-btn:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.login-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .nav-links {
+    gap: 2rem;
+    padding: 0.8rem 2rem;
+  }
+  
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+  
+  #navBar {
+    padding: 1.5rem 2rem;
+  }
+  
+  .nav-center {
+    max-width: calc(100% - 4rem);
+  }
+  
+  .nav-right {
+    gap: 0.8rem;
+  }
+  
+  .login-btn {
+    padding: 0.7rem 1.5rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .nav-links {
+    gap: 1.5rem;
+    padding: 0.7rem 1.5rem;
+  }
+  
+  .nav-links a {
+    font-size: 0.85rem;
+  }
+  
+  .nav-center {
+    max-width: calc(100% - 3rem);
+  }
+  
+  .login-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  .nav-right {
+    gap: 0.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  #navBar {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem 1.5rem;
+  }
+  
+  .logo {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .nav-center {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .nav-links {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 0.8rem 1rem;
+  }
+  
+  .nav-right {
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+  }
+  
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+  
+  .nav-right {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  
+  .login-btn {
+    width: 100%;
+    max-width: 200px;
+  }
 }
 </style>

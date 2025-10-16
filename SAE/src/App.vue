@@ -8,7 +8,7 @@ let lgButton = useLangStore();
 </script>
 
 <template>
-    <NavBar title="lieu"></NavBar>
+    <NavBar></NavBar>
     <router-view></router-view>
     <h1>{{langue.titreTest[lgButton.language]}}</h1>
     <Footer></Footer>

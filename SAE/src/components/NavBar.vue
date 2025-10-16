@@ -74,11 +74,12 @@ body {
   display: flex;
   align-items: center;
   gap: 3rem;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(235, 235, 235, 0.788);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 50px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.123);
+  transition: background 0.3s;
 }
 
 .nav-links li {
@@ -86,18 +87,47 @@ body {
 }
 
 .nav-links a {
+  position: relative;
   text-decoration: none;
   color: #1a1a1a;
-  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0.5px;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
   cursor: pointer;
+  z-index: 1;
 }
 
-.nav-links a:hover {
-  color: #666;
+.nav-links a::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  width: 150%;
+  height: 150%;
+  background: rgba(255,255,255,0.95);
+  border-radius: 2em;
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(.4,0,.2,1), transform 0.25s cubic-bezier(.4,0,.2,1);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.nav-links a:hover::before,
+.nav-links a:focus-visible::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: #222;
+}
+
+.nav-links:hover {
+  background: rgba(220, 220, 220, 0.95);
 }
 
 /* Section droite avec login et language */
@@ -115,7 +145,7 @@ body {
   border: none;
   padding: 0.8rem 2rem;
   border-radius: 50px;
-  font-family: 'Courier New', 'Monaco', 'Consolas', monospace;
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
   font-size: 0.95rem;
   font-weight: 500;
   letter-spacing: 0.5px;

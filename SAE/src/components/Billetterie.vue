@@ -9,7 +9,13 @@ onMounted(() => {
 
 async function acheter(nom) {
   await billetterie.acheterBillet(nom)
-  await billetterie.fetchBilletterie()
+}
+
+function getQuantiteRestante(billet) {
+  if (!billet.jours || billet.jours.length === 1) return billet.quantite;
+  const billets1Jour = billetterie.billets.filter(b => b.jours?.length === 1 && billet.jours.includes(b.jours[0]));
+  const quantites = billets1Jour.map(b => b.quantite);
+  return quantites.length ? Math.min(...quantites) : billet.quantite;
 }
 </script>
 
@@ -17,8 +23,8 @@ async function acheter(nom) {
   <h1>Billetterie</h1>
   <ul>
     <li v-for="billet in billetterie.billets" :key="billet.nom">
-      {{ billet.nom }} - {{ billet.prix }}€ ({{ billet.quantite }} disponibles)
-      <button @click="acheter(billet.nom)" :disabled="billet.quantite === 0">
+      {{ billet.nom }} - {{ billet.prix }}€ ({{getQuantiteRestante(billet) }} disponibles)
+      <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">
         Acheter
       </button>
     </li>

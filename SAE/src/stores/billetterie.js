@@ -16,10 +16,11 @@ export const useBilletterieStore = defineStore('billetterie', {
         async acheterBillet(nom) {
             let response = await BilletterieService.acheterBillet(nom)
             if (response.error === 0) {
-                const billet = this.billets.find(b => b.nom === nom)
-                if (billet) {
-                    billet.quantite = response.data.quantite
-                }
+                response.data.forEach(update => {
+                    const billet = this.billets.find(b => b.nom === update.nom)
+                    if (billet) billet.quantite = update.quantite
+                })
+                this.billets = [...this.billets]
             }
         }
     },

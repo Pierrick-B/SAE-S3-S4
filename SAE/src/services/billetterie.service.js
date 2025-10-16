@@ -1,36 +1,29 @@
 // SAE/src/services/billetterie.service.js
-import LocalSource from "@/services/localsource.service.js";
+import { billets } from "@/datasource/data_billetterie.js";
 
-async function getBilletterieFromLocalSource() {
-    return LocalSource.getBilletterie()
-}
-
-async function getBilletterie() {
-    let response = null;
-    try {
-        response = await LocalSource.getBilletterie()
+class BilletterieService {
+    async getBilletterie() {
+        return { error: 0, data: billets };
     }
-    catch(err) {
-        response = {error: 1, status: 404, data: 'erreur réseau, impossible de se loguer'  }
-    }
-    return response
-}
 
-async function acheterBillet(nom) {
-    const response = await getBilletterieFromLocalSource();
-    const billets = response.data;
-
-    const billet = billets.find(b => b.nom === nom);
-    if (billet && billet.quantite > 0) {
+    async acheterBillet(nom) {
+        const billet = billets.find(b => b.nom === nom);
+        if (!billet || billet.quantite <= 0) {
+            return { error: 1, message: "Billet épuisé" };
+        }
         billet.quantite--;
-        localStorage.setItem('billets', JSON.stringify(billets));
-        return { error: 0, data: billet };
+        let billetsModifies = [{ nom: billet.nom, quantite: billet.quantite }];
+        if (billet.jours && billet.jours.length > 1) {
+            billets
+                .filter(b => b.jours?.length === 1 && billet.jours.some(j => b.jours[0] === j))
+                .forEach(b1j => {
+                    if (b1j.quantite > 0) b1j.quantite--;
+                    billetsModifies.push({ nom: b1j.nom, quantite: b1j.quantite });
+                });
+        }
+
+        return { error: 0, data: billetsModifies };
     }
-    return { error: 1, data: 'Billet épuisé ou introuvable' };
 }
 
-
-export default {
-    getBilletterie,
-    acheterBillet
-}
+export default new BilletterieService();

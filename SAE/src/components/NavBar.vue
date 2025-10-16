@@ -91,9 +91,9 @@ body {
   text-decoration: none;
   color: #1a1a1a;
   font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
   transition: color 0.3s;
   cursor: pointer;
   z-index: 1;

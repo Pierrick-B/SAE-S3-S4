@@ -8,11 +8,26 @@ let lgButton = useLangStore();
 </script>
 
 <template>
-    <NavBar></NavBar>
-    <router-view></router-view>
-    <h1>{{langue.titreTest[lgButton.language]}}</h1>
-    <Footer></Footer>
+    <div class="app-shell">
+        <NavBar />
+        <main class="app-main">
+            <router-view />
+            <h1>{{ langue.titreTest[lgButton.language] }}</h1>
+        </main>
+        <Footer />
+    </div>
+  
 </template>
 
 <style scoped>
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-main {
+    flex: 1 0 auto;
+    display: block;
+}
 </style>

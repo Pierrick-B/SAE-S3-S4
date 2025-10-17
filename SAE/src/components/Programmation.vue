@@ -42,46 +42,50 @@
 <!--  </table>-->
 
   <table>
-    <tr><th>Jeudi</th> <th>Vendredi</th> <th>Samedi</th> <th>Dimanche</th></tr>
-    <tr>
-      <td>
-        <template v-for="(programme, index) in programmationStore.programmation" :key="index" class="activites">
-          <div class="activite"  v-if="programme.jour === 'jeudi'">
-            <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-            <span>{{ programme.nom }}</span>
-            <span>{{ programme.prestataire }}</span>
-          </div>
-        </template>
-      </td>
-      <td>
-        <template v-for="(programme, index) in programmationStore.programmation" :key="index">
-          <div class="activite"  v-if="programme.jour === 'vendredi'">
-            <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-            <span>{{ programme.nom }}</span>
-            <span>{{ programme.prestataire }}</span>
-          </div>
-        </template>
-      </td>
-      <td>
-        <template v-for="(programme, index) in programmationStore.programmation" :key="index">
-          <div class="activite"  v-if="programme.jour === 'samedi'">
-            <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-            <span>{{ programme.nom }}</span>
-            <span>{{ programme.prestataire }}</span>
-          </div>
-        </template>
-      </td>
-      <td>
-        <template v-for="(programme, index) in programmationStore.programmation" :key="index">
-          <div class="activite"  v-if="programme.jour === 'dimanche'">
-            <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-            <span>{{ programme.nom }}</span>
-            <span>{{ programme.prestataire }}</span>
-          </div>
-        </template>
-      </td>
+    <thead>
+      <tr><th>Jeudi</th> <th>Vendredi</th> <th>Samedi</th> <th>Dimanche</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <template v-for="(programme, index) in programmationStore.programmation" :key="index" class="activites">
+            <div class="activite"  v-if="programme.jour === 'jeudi'">
+              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
+              <span>{{ programme.nom }}</span>
+              <span>{{ programme.prestataire }}</span>
+            </div>
+          </template>
+        </td>
+        <td>
+          <template v-for="(programme, index) in programmationStore.programmation" :key="index">
+            <div class="activite"  v-if="programme.jour === 'vendredi'">
+              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
+              <span>{{ programme.nom }}</span>
+              <span>{{ programme.prestataire }}</span>
+            </div>
+          </template>
+        </td>
+        <td>
+          <template v-for="(programme, index) in programmationStore.programmation" :key="index">
+            <div class="activite"  v-if="programme.jour === 'samedi'">
+              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
+              <span>{{ programme.nom }}</span>
+              <span>{{ programme.prestataire }}</span>
+            </div>
+          </template>
+        </td>
+        <td>
+          <template v-for="(programme, index) in programmationStore.programmation" :key="index">
+            <div class="activite"  v-if="programme.jour === 'dimanche'">
+              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
+              <span>{{ programme.nom }}</span>
+              <span>{{ programme.prestataire }}</span>
+            </div>
+          </template>
+        </td>
 
-    </tr>
+      </tr>
+    </tbody>
   </table>
 
 </div>

@@ -4,10 +4,13 @@
   <h1>Programmation de la convention : </h1>
 
   <table>
+    <thead>
     <tr><th>Jeudi</th> <th>Vendredi</th> <th>Samedi</th> <th>Dimanche</th></tr>
+    </thead>
+    <tbody>
     <tr>
       <td>
-        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index" class="activites">
+        <template v-for="(programme, index) in programmationStore.programmation" :key="index" class="activites">
           <div class="activite"  v-if="programme.day === 'jeudi'">
             <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
             <span>{{ programme.name }}</span>
@@ -16,7 +19,7 @@
         </template>
       </td>
       <td>
-        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index">
+        <template v-for="(programme, index) in programmationStore.programmation" :key="index">
           <div class="activite"  v-if="programme.day === 'vendredi'">
             <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
             <span>{{ programme.name }}</span>
@@ -25,7 +28,7 @@
         </template>
       </td>
       <td>
-        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index">
+        <template v-for="(programme, index) in programmationStore.programmation" :key="index">
           <div class="activite"  v-if="programme.day === 'samedi'">
             <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
             <span>{{ programme.name }}</span>
@@ -34,7 +37,7 @@
         </template>
       </td>
       <td>
-        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index">
+        <template v-for="(programme, index) in programmationStore.programmation" :key="index">
           <div class="activite"  v-if="programme.day === 'dimanche'">
             <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
             <span>{{ programme.name }}</span>
@@ -44,57 +47,10 @@
       </td>
 
     </tr>
+    </tbody>
+
   </table>
 </div>
-
-  <div v-if="langStore.language === 'en'">
-
-    <h1>titre</h1>
-
-    <table>
-      <tr><th>Jeudi</th> <th>Vendredi</th> <th>Samedi</th> <th>Dimanche</th></tr>
-      <tr>
-        <td>
-          <div>{{ programmationStore.programmationEn }}</div>
-          <template v-for="(programme, index) in programmationStore.programmationEn" :key="index" class="activites">
-            <div class="activite"  v-if="programme.day === 'thursday'">
-              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
-              <span>{{ programme.name }}</span>
-              <span>{{ programme.provider }}</span>
-            </div>
-          </template>
-        </td>
-        <td>
-          <template v-for="(programme, index) in programmationStoreEn.programmationEn" :key="index">
-            <div class="activite"  v-if="programme.day === 'friday'">
-              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
-              <span>{{ programme.name }}</span>
-              <span>{{ programme.provider }}</span>
-            </div>
-          </template>
-        </td>
-        <td>
-          <template v-for="(programme, index) in programmationStoreEn.programmationEn" :key="index">
-            <div class="activite"  v-if="programme.day === 'saturday'">
-              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
-              <span>{{ programme.name }}</span>
-              <span>{{ programme.provider }}</span>
-            </div>
-          </template>
-        </td>
-        <td>
-          <template v-for="(programme, index) in programmationStoreEn.programmationEn" :key="index">
-            <div class="activite"  v-if="programme.day === 'sunday'">
-              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
-              <span>{{ programme.name }}</span>
-              <span>{{ programme.provider }}</span>
-            </div>
-          </template>
-        </td>
-
-      </tr>
-    </table>
-  </div>
 
 
 </template>
@@ -102,13 +58,8 @@
 <script setup>
 import {useProgrammationStore} from "@/stores/programmation.js";
 const programmationStore = useProgrammationStore()
-// const programmationStoreEn = useProgrammationStore()
 programmationStore.getProgrammationFr()
-// programmationStore.getProgrammationEn()
 
-import { useLangStore } from "@/stores/langStore.js";
-import {programmationEn} from "@/datasource/data_programmation.js";
-const langStore = useLangStore();
 
 
 </script>

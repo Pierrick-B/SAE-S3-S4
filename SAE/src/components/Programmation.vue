@@ -1,94 +1,100 @@
 <template>
-<div>
+<div v-if="langStore.language === 'fr'">
+
   <h1>Programmation de la convention : </h1>
 
-<!--  <h2>Jeudi : </h2>-->
-<!--  <ul v-for="(programme, index) in programmationStore.programmation" :key="index">-->
-<!--    <li v-if="programme.jour === 'jeudi' ">-->
-<!--      de {{ programme.heure_debut }} à {{ programme.heure_fin }} : {{ programme.nom }} organisé par {{ programme.prestataire }}-->
-<!--    </li>-->
-<!--  </ul>-->
-
-<!--  <h2>Vendredi : </h2>-->
-<!--  <ul v-for="(programme, index) in programmationStore.programmation" :key="index">-->
-<!--    <li v-if="programme.jour === 'vendredi' ">-->
-<!--      de {{ programme.heure_debut }} à {{ programme.heure_fin }} : {{ programme.nom }} organisé par {{ programme.prestataire }}-->
-<!--    </li>-->
-<!--  </ul>-->
-
-<!--  <h2>Samedi : </h2>-->
-<!--  <ul v-for="(programme, index) in programmationStore.programmation" :key="index">-->
-<!--    <li v-if="programme.jour === 'samedi' ">-->
-<!--      de {{ programme.heure_debut }} à {{ programme.heure_fin }} : {{ programme.nom }} organisé par {{ programme.prestataire }}-->
-<!--    </li>-->
-<!--  </ul>-->
-
-<!--  <h2>Dimanche : </h2>-->
-<!--  <ul v-for="(programme, index) in programmationStore.programmation" :key="index">-->
-<!--    <li v-if="programme.jour === 'dimanche' ">-->
-<!--      de {{ programme.heure_debut }} à {{ programme.heure_fin }} : {{ programme.nom }} organisé par {{ programme.prestataire }}-->
-<!--    </li>-->
-<!--  </ul>-->
-
-<!--  <table>-->
-<!--    <tr><th>Jour/Horaire</th><th>08h00-10h00</th><th>10h00-12h00</th><th>13h00-15h00</th><th>15h00-17h00</th></tr>-->
-<!--    <tr><th rowspan="2">Jeudi</th></tr><tr></tr>-->
-<!--    <tr><th>Vendredi</th></tr>-->
-<!--    <tr><th>Samedi</th></tr>-->
-<!--    <tr><th>Dimanche</th></tr>-->
-<!--  </table>-->
-
-
-<!--  </table>-->
-
   <table>
-    <thead>
+    <tr><th>Jeudi</th> <th>Vendredi</th> <th>Samedi</th> <th>Dimanche</th></tr>
+    <tr>
+      <td>
+        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index" class="activites">
+          <div class="activite"  v-if="programme.day === 'jeudi'">
+            <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
+            <span>{{ programme.name }}</span>
+            <span>{{ programme.provider }}</span>
+          </div>
+        </template>
+      </td>
+      <td>
+        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index">
+          <div class="activite"  v-if="programme.day === 'vendredi'">
+            <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
+            <span>{{ programme.name }}</span>
+            <span>{{ programme.provider }}</span>
+          </div>
+        </template>
+      </td>
+      <td>
+        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index">
+          <div class="activite"  v-if="programme.day === 'samedi'">
+            <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
+            <span>{{ programme.name }}</span>
+            <span>{{ programme.provider }}</span>
+          </div>
+        </template>
+      </td>
+      <td>
+        <template v-for="(programme, index) in programmationStore.programmationFr" :key="index">
+          <div class="activite"  v-if="programme.day === 'dimanche'">
+            <span>{{ programme.start_hour }}h - {{ programme.end_hour }}h</span>
+            <span>{{ programme.name }}</span>
+            <span>{{ programme.provider }}</span>
+          </div>
+        </template>
+      </td>
+
+    </tr>
+  </table>
+</div>
+
+  <div v-if="langStore.language === 'en'">
+
+    <h1>titre</h1>
+
+    <table>
       <tr><th>Jeudi</th> <th>Vendredi</th> <th>Samedi</th> <th>Dimanche</th></tr>
-    </thead>
-    <tbody>
       <tr>
         <td>
-          <template v-for="(programme, index) in programmationStore.programmation" :key="index" class="activites">
-            <div class="activite"  v-if="programme.jour === 'jeudi'">
-              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-              <span>{{ programme.nom }}</span>
-              <span>{{ programme.prestataire }}</span>
+          <div>{{ programmationStore.programmationEn }}</div>
+          <template v-for="(programme, index) in programmationStore.programmationEn" :key="index" class="activites">
+            <div class="activite"  v-if="programme.day === 'thursday'">
+              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
+              <span>{{ programme.name }}</span>
+              <span>{{ programme.provider }}</span>
             </div>
           </template>
         </td>
         <td>
-          <template v-for="(programme, index) in programmationStore.programmation" :key="index">
-            <div class="activite"  v-if="programme.jour === 'vendredi'">
-              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-              <span>{{ programme.nom }}</span>
-              <span>{{ programme.prestataire }}</span>
+          <template v-for="(programme, index) in programmationStoreEn.programmationEn" :key="index">
+            <div class="activite"  v-if="programme.day === 'friday'">
+              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
+              <span>{{ programme.name }}</span>
+              <span>{{ programme.provider }}</span>
             </div>
           </template>
         </td>
         <td>
-          <template v-for="(programme, index) in programmationStore.programmation" :key="index">
-            <div class="activite"  v-if="programme.jour === 'samedi'">
-              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-              <span>{{ programme.nom }}</span>
-              <span>{{ programme.prestataire }}</span>
+          <template v-for="(programme, index) in programmationStoreEn.programmationEn" :key="index">
+            <div class="activite"  v-if="programme.day === 'saturday'">
+              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
+              <span>{{ programme.name }}</span>
+              <span>{{ programme.provider }}</span>
             </div>
           </template>
         </td>
         <td>
-          <template v-for="(programme, index) in programmationStore.programmation" :key="index">
-            <div class="activite"  v-if="programme.jour === 'dimanche'">
-              <span>{{ programme.heure_debut }}h -{{ programme.heure_fin }}h</span>
-              <span>{{ programme.nom }}</span>
-              <span>{{ programme.prestataire }}</span>
+          <template v-for="(programme, index) in programmationStoreEn.programmationEn" :key="index">
+            <div class="activite"  v-if="programme.day === 'sunday'">
+              <span>{{ programme.start_hour }}h -{{ programme.end_hour }}h</span>
+              <span>{{ programme.name }}</span>
+              <span>{{ programme.provider }}</span>
             </div>
           </template>
         </td>
 
       </tr>
-    </tbody>
-  </table>
-
-</div>
+    </table>
+  </div>
 
 
 </template>
@@ -96,7 +102,14 @@
 <script setup>
 import {useProgrammationStore} from "@/stores/programmation.js";
 const programmationStore = useProgrammationStore()
-programmationStore.getProgrammation()
+// const programmationStoreEn = useProgrammationStore()
+programmationStore.getProgrammationFr()
+// programmationStore.getProgrammationEn()
+
+import { useLangStore } from "@/stores/langStore.js";
+import {programmationEn} from "@/datasource/data_programmation.js";
+const langStore = useLangStore();
+
 
 </script>
 

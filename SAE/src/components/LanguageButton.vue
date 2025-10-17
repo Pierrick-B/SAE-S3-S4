@@ -10,6 +10,21 @@
 </script>
 
 <template>
-  <button type="button" @click="LanguageButtonClick">{{ lgButton.language }}</button>
+  <a v-if="lgButton.language==='fr'" class="lgButton" type="button" @click="LanguageButtonClick">
+    <img class="lgImg" src="@/images/fr.png">
+  </a>
+
+  <a v-if="lgButton.language==='en'" class="lgButton" type="button" @click="LanguageButtonClick">
+    <img class="lgImg" src="@/images/en.png">
+  </a>
   <label>{{ langue["test2"][lgButton.language] }}</label>
 </template>
+
+<style>
+  .lgButton .lgImg{
+    width: 35px;
+    height: 30px;
+    padding: 0px;
+    margin: 0px;
+  }
+</style>

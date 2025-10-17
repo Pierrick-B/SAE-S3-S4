@@ -13,6 +13,7 @@
   <a v-if="lgButton.language==='fr'" class="lgButton" type="button" @click="LanguageButtonClick">
     <img class="lgImg" src="@/images/fr.png">
   </a>
+
   <a v-if="lgButton.language==='en'" class="lgButton" type="button" @click="LanguageButtonClick">
     <img class="lgImg" src="@/images/en.png">
   </a>

@@ -9,12 +9,12 @@ let lgButton = useLangStore();
 
 <template>
     <div class="app-shell">
-        <NavBar />
+        <NavBar></NavBar>
         <main class="app-main">
             <router-view />
             <h1>{{ langue.titreTest[lgButton.language] }}</h1>
         </main>
-        <Footer />
+        <Footer></Footer>
     </div>
   
 </template>

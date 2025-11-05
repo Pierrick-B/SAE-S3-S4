@@ -5,7 +5,7 @@ import LanguageButton from "@/components/LanguageButton.vue";
 <template>
   <footer id="footer">
     <div class="footer-left">
-      <img src="/logo-placeholder.svg" alt="Logo Pop Con" width="40" height="40" />
+      <img src="/src/images/logo.png" alt="Logo Pop Con" width="96" height="96" />
       <span class="brand">Pop Con</span>
     </div>
 

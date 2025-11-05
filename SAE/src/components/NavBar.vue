@@ -15,7 +15,7 @@
 <template>
   <nav id="navBar">
     <div class="logo">
-      <img src="/logo-placeholder.svg" alt="Logo" width="48" height="48">
+      <img src="/src/images/logo.png" alt="Logo" width="96" height="96">
     </div>
     
     <div class="nav-center">

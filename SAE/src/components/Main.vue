@@ -56,10 +56,9 @@ const { t } = useI18n()
   pointer-events: none;
 }
 
-.hero-logo {
-  width: min(30vw, 280px);
-  max-width: 100%;
-  height: auto;
+.image .hero-logo {
+  width: 30%;
+  height: 10%;
   display: block;
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25));
 }
@@ -87,8 +86,8 @@ const { t } = useI18n()
 
 .image img {
   display: block;
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 1080px;
 }
 
 .presentation {

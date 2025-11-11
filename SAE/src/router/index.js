@@ -5,7 +5,7 @@ import Main  from "@/components/Main.vue";
 
 const routes = [
     {
-        path: '/user/programation',
+        path: '/programmation',
         name: 'programmation',
         component: Programmation
     },

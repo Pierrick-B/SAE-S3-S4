@@ -5,11 +5,10 @@
 
   let lgButton = useLangStore();
   const pages = [
-    { id: 1, name: 'Accueil', href: '/' },
-    { id: 2, name: 'À propos', href: '#' },
-    { id: 3, name: 'Services', href: '#' },
-    { id: 4, name: 'Contact', href: '#' }
-  ]
+    { id: 1, name: 'Accueil', to: { name: 'accueil' } },
+    { id: 2, name: 'Programmation', to: { name: 'programmation' } },
+    { id: 3, name: 'Billetterie', to: { name: 'billetterie' } }
+  ];
 </script>
 
 <template>
@@ -21,7 +20,7 @@
     <div class="nav-center">
       <ul class="nav-links">
         <li v-for="page in pages" :key="page.id">
-          <a :href="page.href">{{ page.name.toUpperCase() }}</a>
+          <router-link :to="page.to">{{ page.name.toUpperCase() }}</router-link>
         </li>
       </ul>
     </div>
@@ -128,6 +127,12 @@ body {
 
 .nav-links:hover {
   background: rgba(220, 220, 220, 0.95);
+}
+
+.nav-links .router-link-active,
+.nav-links .router-link-exact-active {
+  color: #111;
+  text-decoration: underline;
 }
 
 /* Section droite avec login et language */

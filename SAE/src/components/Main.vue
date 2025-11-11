@@ -12,7 +12,7 @@ const {currentTranslations} = storeToRefs(langStore);
       <img src="https://liquidblueevents.com/wp-content/uploads/2020/01/reno_pop_culture_con-101sm.jpg"
            alt="une convention">
       <div class="logo">
-        <img src="/logo-placeholder.svg" alt="Logo" width="48" height="48">
+        <img src="/src/images/logo.png" alt="Belfort POP Con logo" class="hero-logo">
       </div>
       <div class="description">
         <div class="text-overlay">
@@ -52,10 +52,21 @@ const {currentTranslations} = storeToRefs(langStore);
 
 .logo {
   position: absolute;
-  top: 45%;
+  top: 50%;
   left: 50%;
-  width: 25%;
   transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-logo {
+  width: min(30vw, 280px);
+  max-width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25));
 }
 
 .description {

@@ -6,15 +6,14 @@ import LanguageButton from "@/components/LanguageButton.vue";
   <footer id="footer">
     <div class="footer-left">
       <img src="/src/images/logo.png" alt="Logo Pop Con" width="96" height="96" />
-      <span class="brand">Pop Con</span>
+      <span class="brand">Belfort POP Con</span>
     </div>
 
     <div class="footer-center">
-      <ul class="footer-links">
-        <li>
-          <router-link :to="{ name: 'programmation' }">Programmation</router-link>
-        </li>
-      </ul>
+      <div class="footer-info">
+        <span>Offemont, Territoire de Belfort</span> &bull;
+        <span>Pop culture, jeux vidéo, manga/anime, comics</span>
+      </div>
     </div>
 
     <div class="footer-right">
@@ -22,7 +21,11 @@ import LanguageButton from "@/components/LanguageButton.vue";
     </div>
   </footer>
   <div class="footer-bottom">
-    <small>© 2025 Pop Con. Tous droits réservés.</small>
+    <small>
+      Groupe 10 (A1-B1) : Pierrick Bapicot, Mathéo Bonnet, Damien Bretteville, Alexis Colas, Noa Leenknegt &bull;
+      <a href="mailto:contact@belfortpopcon.fr">Contact</a><br>
+      © 2025 Belfort POP Con. Tous droits réservés.
+    </small>
   </div>
 </template>
 
@@ -56,58 +59,27 @@ import LanguageButton from "@/components/LanguageButton.vue";
   max-width: calc(100% - 6rem);
 }
 
-.footer-links {
-  list-style: none;
-  margin: 0;
+.footer-info {
   padding: 0.6rem 2rem;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   background: rgba(235, 235, 235, 0.8);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 50px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   transition: background 0.3s;
-}
-
-.footer-links li { display: inline-block; }
-
-.footer-links a {
-  position: relative;
-  text-decoration: none;
-  color: #1a1a1a;
   font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
   font-size: 0.9rem;
   font-weight: 600;
-  letter-spacing: 0.4px;
-  text-transform: uppercase;
-  transition: color 0.3s;
-  cursor: pointer;
-  z-index: 1;
+  color: #1a1a1a;
+  text-align: center;
 }
 
-.footer-links a::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(0.7);
-  width: 125%;
-  height: 150%;
-  background: rgba(255,255,255,0.95);
-  border-radius: 2em;
-  opacity: 0;
-  transition: opacity 0.25s cubic-bezier(.4,0,.2,1), transform 0.25s cubic-bezier(.4,0,.2,1);
-  z-index: -1;
-  pointer-events: none;
+.footer-info:hover {
+  background: rgba(220, 220, 220, 0.95);
 }
-
-.footer-links a:hover::before,
-.footer-links a:focus-visible::before { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-.footer-links a:hover,
-.footer-links a:focus-visible { color: #222; }
-.footer-links:hover { background: rgba(220, 220, 220, 0.95); }
 
 .footer-right { display: flex; align-items: center; gap: 0.8rem; }
 
@@ -117,12 +89,28 @@ import LanguageButton from "@/components/LanguageButton.vue";
   justify-content: center;
   padding: 0.4rem 1rem 1.2rem;
   box-sizing: border-box;
+  background: rgba(235, 235, 235, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .footer-bottom small {
   color: #666;
   font-size: 0.8rem;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.footer-bottom a {
+  color: #1a1a1a;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+.footer-bottom a:hover {
+  color: #333;
 }
 
 /* Responsive */
@@ -140,11 +128,11 @@ import LanguageButton from "@/components/LanguageButton.vue";
 
   .footer-left { width: 100%; justify-content: center; }
   .footer-center { position: static; transform: none; width: 100%; max-width: 100%; }
-  .footer-links { width: 100%; justify-content: center; flex-wrap: wrap; gap: 1rem; padding: 0.6rem 1rem; box-sizing: border-box; }
+  .footer-info { width: 100%; justify-content: center; flex-wrap: wrap; gap: 1rem; padding: 0.6rem 1rem; box-sizing: border-box; }
   .footer-right { width: 100%; justify-content: center; }
 }
 
 @media (max-width: 480px) {
-  .footer-links { flex-direction: column; gap: 0.8rem; }
+  .footer-info { flex-direction: column; gap: 0.8rem; }
 }
 </style>

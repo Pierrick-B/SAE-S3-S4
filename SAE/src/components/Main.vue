@@ -57,7 +57,7 @@ const { t } = useI18n()
 }
 
 .image .hero-logo {
-  width: 30%;
+  width: 60%;
   height: 10%;
   display: block;
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25));

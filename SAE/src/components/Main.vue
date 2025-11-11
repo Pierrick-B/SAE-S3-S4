@@ -19,36 +19,71 @@ const { t } = useI18n()
       </div>
     </div>
     <div class="presentation">
-      <p>{{ $t('heroDescription') }}</p>
+      <p :style="{ whiteSpace: 'pre-line' }">{{ $t('heroDescription') }}</p>
     </div>
     <div class="misc">
-      <div class="leaderboard">
-        <p>{{ $t('leaderboard') }}</p>
+      <div class="misc-item">
+        <div class="leaderboard">
+          <img src="../images/podium.jpg">
+          <p>{{ $t('leaderboard') }}</p>
+        </div>
       </div>
-      <div class="stands">
-        <p>{{ $t('stands') }}</p>
+      <div class="misc-item">  
+        <img src="../images/stand.jpg">
+        <div class="stands">
+          <p>{{ $t('stands') }}</p>
+        </div>
       </div>
-      <div class="carte">
-        <p>{{ $t('carte') }}</p>
+      <div class="misc-item">
+        <div class="carte">
+          <p>{{ $t('carte') }}</p>
+        </div>
       </div>
     </div>
   </main>
 </template>
 
 <style scoped>
+
+.main {
+  width: 100%;
+}
+
 :root {
   --grey-darker: 180 1% 35%;
 }
 
-.image {
-  position: relative;
-  display: inline-block;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-.logo {
+.image {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.image img {
+  height: 100vh;
+  width: auto;
+  min-width: 100vw;
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+
+.image .logo img{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: 40%;
+  min-width: 0;
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
@@ -57,8 +92,6 @@ const { t } = useI18n()
 }
 
 .image .hero-logo {
-  width: 60%;
-  height: 10%;
   display: block;
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25));
 }
@@ -66,8 +99,8 @@ const { t } = useI18n()
 .description {
   font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
   font-weight: bold;
-  font-size: 35px;
   position: absolute;
+  height: 130px;
   bottom: 8%;
   left: 50%;
   height: auto;
@@ -78,22 +111,16 @@ const { t } = useI18n()
   background-color: hsl(180 1% 35% / .6);
   color: white;
   backdrop-filter: blur(10px);
+  font-size: 2vh;
   text-align: center;
   border-radius: .5rem;
   padding: 1px 20px 1px 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.image img {
-  display: block;
-  width: auto;
-  height: 1080px;
-}
-
 .presentation {
   font-family: Titillium, Arial, sans-serif;
-  font-size: 40px;
-  font-weight: 600;
+  font-size: 3vh;
   width: 80%;
   place-self: center;
   justify-content: right;
@@ -104,22 +131,21 @@ const { t } = useI18n()
   flex-direction: row;
   flex-wrap: wrap;
   width: 90%;
+  gap: 3%;
   align-self: center;
 }
 
-.leaderboard {
+.misc-item {
+  width: 30%;
   flex: 1 1 auto;
   text-align: center;
+  border: 1px solid grey;
+  border-radius: 15px;
 }
 
-.carte {
-  flex: 1 1 auto;
-  text-align: center;
-}
-
-.stands {
-  flex: 1 1 auto;
-  text-align: center;
+.misc-item img{
+  max-width: 90%;
+  max-height: 90%;
 }
 
 main{

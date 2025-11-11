@@ -1,7 +1,8 @@
 <script setup>
-  import langue from "@/datasource/lang.json"
+  import { useI18n } from 'vue-i18n'
   import { useLangStore } from "@/stores/langStore.js";
 
+  const { t } = useI18n()
   let lgButton = useLangStore()
   function LanguageButtonClick(event){
     lgButton.toggleLanguage();
@@ -17,7 +18,6 @@
   <a v-if="lgButton.language==='en'" class="lgButton" type="button" @click="LanguageButtonClick">
     <img class="lgImg" src="@/images/en.png">
   </a>
-  <label>{{ langue["test2"][lgButton.language] }}</label>
 </template>
 
 <style>

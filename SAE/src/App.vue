@@ -1,10 +1,24 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue';
 import Footer from "@/components/Footer.vue";
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { watch, onMounted } from 'vue'
 
-import langue from "@/datasource/lang.json"
-import { useLangStore } from "@/stores/langStore.js";
-let lgButton = useLangStore();
+const { t } = useI18n()
+const route = useRoute()
+
+function updateTitle() {
+  const title = t(route.meta.titleKey || 'pageTitleAccueil')
+  document.title = `${title} - Belfort Pop Con`
+}
+
+onMounted(() => {
+  updateTitle()
+})
+
+watch(() => route.meta, updateTitle, { deep: true })
+watch(() => t(route.meta.titleKey || 'pageTitleAccueil'), updateTitle)
 </script>
 
 <template>
@@ -12,7 +26,6 @@ let lgButton = useLangStore();
         <NavBar></NavBar>
         <main class="app-main">
             <router-view />
-            <h1>{{ langue.titreTest[lgButton.language] }}</h1>
         </main>
         <Footer></Footer>
     </div>

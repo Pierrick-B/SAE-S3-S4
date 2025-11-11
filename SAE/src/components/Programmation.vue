@@ -1,11 +1,11 @@
 <template>
 <div>
 
-  <h1>Programmation de la convention : </h1>
+  <h1>{{ $t('programmationTitle') }}</h1>
 
   <table>
     <thead>
-    <tr><th>Jeudi</th> <th>Vendredi</th> <th>Samedi</th> <th>Dimanche</th></tr>
+    <tr><th>{{ $t('jeudi') }}</th> <th>{{ $t('vendredi') }}</th> <th>{{ $t('samedi') }}</th> <th>{{ $t('dimanche') }}</th></tr>
     </thead>
     <tbody>
     <tr>
@@ -56,7 +56,10 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
 import {useProgrammationStore} from "@/stores/programmation.js";
+
+const { t } = useI18n()
 const programmationStore = useProgrammationStore()
 programmationStore.getProgrammation()
 

@@ -1,18 +1,21 @@
 <script setup>
 import LanguageButton from "@/components/LanguageButton.vue";
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 </script>
 
 <template>
   <footer id="footer">
     <div class="footer-left">
       <img src="/src/images/logo.png" alt="Logo Pop Con" width="96" height="96" />
-      <span class="brand">Belfort POP Con</span>
+      <span class="brand">{{ $t('footerBrand') }}</span>
     </div>
 
     <div class="footer-center">
       <div class="footer-info">
-        <span>Offemont, Territoire de Belfort</span> &bull;
-        <span>Pop culture, jeux vidéo, manga/anime, comics</span>
+        <span>{{ $t('footerLocation') }}</span> &bull;
+        <span>{{ $t('footerThemes') }}</span>
       </div>
     </div>
 
@@ -22,9 +25,9 @@ import LanguageButton from "@/components/LanguageButton.vue";
   </footer>
   <div class="footer-bottom">
     <small>
-      Groupe 10 (A1-B1) : Pierrick Bapicot, Mathéo Bonnet, Damien Bretteville, Alexis Colas, Noa Leenknegt &bull;
-      <a href="mailto:contact@belfortpopcon.fr">Contact</a><br>
-      © 2025 Belfort POP Con. Tous droits réservés.
+      {{ $t('footerGroup') }} &bull;
+      <a href="mailto:contact@belfortpopcon.fr">{{ $t('footerContact') }}</a><br>
+      {{ $t('footerCopyright') }}
     </small>
   </div>
 </template>

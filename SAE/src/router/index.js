@@ -7,17 +7,20 @@ const routes = [
     {
         path: '/programmation',
         name: 'programmation',
-        component: Programmation
+        component: Programmation,
+        meta: { titleKey: 'pageTitleProgrammation' }
     },
     {
         path: '/shop/billetterie',
         name: 'billetterie',
-        component: Billetterie
+        component: Billetterie,
+        meta: { titleKey: 'pageTitleBilletterie' }
     },
     {
         path: '/',
         name: 'accueil',
-        component: Main
+        component: Main,
+        meta: { titleKey: 'pageTitleAccueil' }
     }
 ]
 

@@ -1,6 +1,9 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
 import { onMounted, computed } from 'vue'
 import { useBilletterieStore } from '@/stores/billetterie.js'
+
+const { t } = useI18n()
 const billetterie = useBilletterieStore()
 
 onMounted(() => {
@@ -24,40 +27,40 @@ const billets4Jours = computed(() => billetterie.billets.billets4Jours || [])
 
 
 <template>
-  <h1>Billetterie</h1>
+  <h1>{{ $t('billetterieTitle') }}</h1>
   <section>
-    <h2>Billets 1 jour</h2>
+    <h2>{{ $t('billets1Jour') }}</h2>
     <ul>
       <li v-for="billet in billets1Jour" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} disponibles)
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">Acheter</button>
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>
   <section>
-    <h2>Billets 2 jours</h2>
+    <h2>{{ $t('billets2Jours') }}</h2>
     <ul>
       <li v-for="billet in billets2Jours" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} disponibles)
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">Acheter</button>
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>
   <section>
-    <h2>Billets 3 jours</h2>
+    <h2>{{ $t('billets3Jours') }}</h2>
     <ul>
       <li v-for="billet in billets3Jours" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} disponibles)
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">Acheter</button>
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>
   <section>
-    <h2>Billets 4 jours</h2>
+    <h2>{{ $t('billets4Jours') }}</h2>
     <ul>
       <li v-for="billet in billets4Jours" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} disponibles)
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">Acheter</button>
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>

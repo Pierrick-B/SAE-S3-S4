@@ -1,14 +1,16 @@
 <script setup>
   import LanguageButton from "@/components/LanguageButton.vue";
-  import langue from "@/datasource/lang.json"
+  import { useI18n } from 'vue-i18n'
   import { useLangStore } from "@/stores/langStore.js";
+  import { computed } from 'vue'
 
+  const { t } = useI18n()
   let lgButton = useLangStore();
-  const pages = [
-    { id: 1, name: 'Accueil', to: { name: 'accueil' } },
-    { id: 2, name: 'Programmation', to: { name: 'programmation' } },
-    { id: 3, name: 'Billetterie', to: { name: 'billetterie' } }
-  ];
+  const pages = computed(() => [
+    { id: 1, name: t('pageTitleAccueil'), to: { name: 'accueil' } },
+    { id: 2, name: t('pageTitleProgrammation'), to: { name: 'programmation' } },
+    { id: 3, name: t('pageTitleBilletterie'), to: { name: 'billetterie' } }
+  ]);
 </script>
 
 <template>
@@ -26,7 +28,7 @@
     </div>
     
     <div class="nav-right">
-      <button class="login-btn">LOGIN</button>
+      <button class="login-btn">{{ $t('login') }}</button>
       <LanguageButton></LanguageButton>
     </div>
   </nav>

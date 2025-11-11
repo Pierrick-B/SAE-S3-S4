@@ -1,9 +1,7 @@
 <script setup>
-import {useLangStore} from "@/stores/langStore.js";
-import {storeToRefs} from "pinia";
+import { useI18n } from 'vue-i18n'
 
-const langStore = useLangStore();
-const {currentTranslations} = storeToRefs(langStore);
+const { t } = useI18n()
 </script>
 
 <template>
@@ -16,25 +14,22 @@ const {currentTranslations} = storeToRefs(langStore);
       </div>
       <div class="description">
         <div class="text-overlay">
-          <p>L'ULTIME RASSEMBLEMENT DES FANDOMS</p>
+          <p>{{ $t('heroTitle') }}</p>
         </div>
       </div>
     </div>
     <div class="presentation">
-      <p>Plongez dans un univers vibrant où se rencontrent les fans de comics, films, séries TV, jeux vidéo et anime.<br>
-        C'est le rendez-vous annuel pour rencontrer des célébrités, assister à des panels exclusifs et des ateliers
-        créatifs, et découvrir le travail d'artistes et d'auteurs.<br> Que vous soyez en cosplay ou simplement curieux,
-        venez partager votre passion et créer des souvenirs inoubliables.</p>
+      <p>{{ $t('heroDescription') }}</p>
     </div>
     <div class="misc">
       <div class="leaderboard">
-        <p>Leaderboard</p>
+        <p>{{ $t('leaderboard') }}</p>
       </div>
       <div class="stands">
-        <p>Stands</p>
+        <p>{{ $t('stands') }}</p>
       </div>
       <div class="carte">
-        <p>Carte</p>
+        <p>{{ $t('carte') }}</p>
       </div>
     </div>
   </main>

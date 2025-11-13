@@ -28,5 +28,15 @@
   "billetterie": "Billetterie",
   "pageTitleAccueil": "Accueil",
   "pageTitleProgrammation": "Programmation",
-  "pageTitleBilletterie": "Billetterie"
+  "pageTitleBilletterie": "Billetterie",
+  "pageTitleProfile": "Profil",
+  "profile": {
+    "title": "Profil Utilisateur",
+    "info": "Informations Utilisateur",
+    "name": "Nom",
+    "email": "Email",
+    "favorites": "Stands Favoris",
+    "registeredEvents": "Événements Inscrits",
+    "loading": "Chargement du profil..."
+  }
 }

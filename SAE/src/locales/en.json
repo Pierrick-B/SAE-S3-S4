@@ -28,5 +28,15 @@
   "billetterie": "Ticketing",
   "pageTitleAccueil": "Home",
   "pageTitleProgrammation": "Schedule",
-  "pageTitleBilletterie": "Ticketing"
+  "pageTitleBilletterie": "Ticketing",
+  "pageTitleProfile": "Profile",
+  "profile": {
+    "title": "User Profile",
+    "info": "User Information",
+    "name": "Name",
+    "email": "Email",
+    "favorites": "Favorite Stands",
+    "registeredEvents": "Registered Events",
+    "loading": "Loading profile..."
+  }
 }

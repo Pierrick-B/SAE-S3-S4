@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Programmation from "@/components/Programmation.vue";
 import Billetterie  from "@/components/Billetterie.vue";
 import Main  from "@/components/Main.vue";
+import Profile from "@/components/Profile.vue";
 
 const routes = [
     {
@@ -21,6 +22,12 @@ const routes = [
         name: 'accueil',
         component: Main,
         meta: { titleKey: 'pageTitleAccueil' }
+    },
+    {
+        path: '/profile/:userId',
+        name: 'profile',
+        component: Profile,
+        meta: { titleKey: 'pageTitleProfile' }
     }
 ]
 

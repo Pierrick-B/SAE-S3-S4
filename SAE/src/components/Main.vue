@@ -19,24 +19,27 @@ const { t } = useI18n()
       </div>
     </div>
     <div class="presentation">
-      <p :style="{ whiteSpace: 'pre-line' }">{{ $t('heroDescription') }}</p>
+      <div class="text">
+        <p :style="{ whiteSpace: 'pre-line' }">{{ $t('heroDescription') }}</p>
+      </div>
     </div>
     <div class="misc">
       <div class="misc-item">
         <div class="leaderboard">
           <img src="../images/podium.jpg">
-          <p>{{ $t('leaderboard') }}</p>
+          <p class="titre">{{ $t('leaderboard') }}</p>
         </div>
       </div>
       <div class="misc-item">  
         <img src="../images/stand.jpg">
         <div class="stands">
-          <p>{{ $t('stands') }}</p>
+          <p class="titre">{{ $t('stands') }}</p>
         </div>
       </div>
       <div class="misc-item">
         <div class="carte">
-          <p>{{ $t('carte') }}</p>
+          <img src="../images/carte.jpg" style="object-position: center 50%;">
+          <p class="titre">{{ $t('carte') }}</p>
         </div>
       </div>
     </div>
@@ -119,33 +122,79 @@ html, body {
 }
 
 .presentation {
-  font-family: Titillium, Arial, sans-serif;
-  font-size: 3vh;
-  width: 80%;
-  place-self: center;
-  justify-content: right;
+  font-family: 'Titillium', Arial, sans-serif;
+  font-size: 2.4vh;
+  width: 100vw;
+  line-height: 1.6;
+  color: hsl(0, 0%, 9%);
+  text-align: justify;
+  backdrop-filter: blur(8px);
+  padding: 2rem 2.5rem;
+  background-color: rgb(241, 241, 241);
+  display: flex;
+  justify-content: center;
+}
+
+.presentation .text {
+  width: 70%;
 }
 
 .misc {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   width: 90%;
   gap: 3%;
-  align-self: center;
+  margin-top: 2rem;
+  row-gap: 20px;
 }
 
 .misc-item {
+  position: relative;
   width: 30%;
-  flex: 1 1 auto;
-  text-align: center;
-  border: 1px solid grey;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
   border-radius: 15px;
+  min-width: 400px;
 }
 
-.misc-item img{
-  max-width: 90%;
-  max-height: 90%;
+.misc-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  display: block;
+  transition: transform 0.6s ease-in-out; 
+}
+
+.misc-item:hover img {
+  transform: scale(1.05);
+}
+
+.misc-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%; 
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.0));
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.misc-item .titre {
+  position: absolute;
+  z-index: 2;
+  font-family: 'Bebas Neue', sans-serif;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 3vh;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
 }
 
 main{
@@ -153,4 +202,5 @@ main{
   flex-direction: column;
   align-items: center;
 }
+.misc-item:nth-child(3) img { object-position: center 10%; }
 </style>

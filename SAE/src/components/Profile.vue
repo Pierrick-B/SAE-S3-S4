@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { onMounted, computed } from 'vue'
 import { useUserStore } from '@/stores/user.js'
 import { useRoute } from 'vue-router'
-import stands from '@/datasource/stands.json'
+import stands from '@/datasource/stands.js'
 import { programmation } from '@/datasource/data_programmation.js'
 
 const { t } = useI18n()

@@ -1,66 +1,55 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
-import { onMounted, computed } from 'vue'
 import { useBilletterieStore } from '@/stores/billetterie.js'
+import billetterieService from '@/services/billetterie.service.js'
+import panierService from '@/services/panier.service.js'
 
 const { t } = useI18n()
 const billetterie = useBilletterieStore()
 
-onMounted(() => {
-  billetterie.fetchBilletterie()
-})
-
-function acheter(nom) {
-  billetterie.acheterBillet(nom)
-}
-
-function getQuantiteRestante(billet) {
-  return billet.quantite
-}
-
-// Catégories calculées
-const billets1Jour = computed(() => billetterie.billets.billets1Jour || [])
-const billets2Jours = computed(() => billetterie.billets.billets2Jours || [])
-const billets3Jours = computed(() => billetterie.billets.billets3Jours || [])
-const billets4Jours = computed(() => billetterie.billets.billets4Jours || [])
+billetterie.fetchBilletterie()
 </script>
-
 
 <template>
   <h1>{{ $t('billetterieTitle') }}</h1>
   <section>
     <h2>{{ $t('billets1Jour') }}</h2>
     <ul>
-      <li v-for="billet in billets1Jour" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
+      <li v-for="billet in (billetterie.billets.billets1Jour || [])" :key="billet.nom">
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ billetterieService.getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="billetterieService.acheter(billet.nom).then(response => {
+          if (response.error === 0)
+          { billetterie.fetchBilletterie();
+          panierService.ajouterItem({ id: billet.nom, nom: billet.nom, prix: billet.prix, quantite: 1 }); }
+          else
+          { alert(response.message || 'Erreur lors de l\'achat') } }).catch(() => alert('Erreur réseau'))" :disabled="billetterieService.getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>
   <section>
     <h2>{{ $t('billets2Jours') }}</h2>
     <ul>
-      <li v-for="billet in billets2Jours" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
+      <li v-for="billet in (billetterie.billets.billets2Jours || [])" :key="billet.nom">
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ billetterieService.getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="billetterieService.acheter(billet.nom).then(response => { if (response.error === 0) { billetterie.fetchBilletterie(); panierService.ajouterItem({ id: billet.nom, nom: billet.nom, prix: billet.prix, quantite: 1 }); } else { alert(response.message || 'Erreur lors de l\'achat') } }).catch(() => alert('Erreur réseau'))" :disabled="billetterieService.getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>
   <section>
     <h2>{{ $t('billets3Jours') }}</h2>
     <ul>
-      <li v-for="billet in billets3Jours" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
+      <li v-for="billet in (billetterie.billets.billets3Jours || [])" :key="billet.nom">
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ billetterieService.getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="billetterieService.acheter(billet.nom).then(response => { if (response.error === 0) { billetterie.fetchBilletterie(); panierService.ajouterItem({ id: billet.nom, nom: billet.nom, prix: billet.prix, quantite: 1 }); } else { alert(response.message || 'Erreur lors de l\'achat') } }).catch(() => alert('Erreur réseau'))" :disabled="billetterieService.getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>
   <section>
     <h2>{{ $t('billets4Jours') }}</h2>
     <ul>
-      <li v-for="billet in billets4Jours" :key="billet.nom">
-        {{ billet.nom }} - {{ billet.prix }}€ ({{ getQuantiteRestante(billet) }} {{ $t('disponibles') }})
-        <button @click="acheter(billet.nom)" :disabled="getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
+      <li v-for="billet in (billetterie.billets.billets4Jours || [])" :key="billet.nom">
+        {{ billet.nom }} - {{ billet.prix }}€ ({{ billetterieService.getQuantiteRestante(billet) }} {{ $t('disponibles') }})
+        <button @click="billetterieService.acheter(billet.nom).then(response => { if (response.error === 0) { billetterie.fetchBilletterie(); panierService.ajouterItem({ id: billet.nom, nom: billet.nom, prix: billet.prix, quantite: 1 }); } else { alert(response.message || 'Erreur lors de l\'achat') } }).catch(() => alert('Erreur réseau'))" :disabled="billetterieService.getQuantiteRestante(billet) === 0">{{ $t('acheter') }}</button>
       </li>
     </ul>
   </section>
@@ -134,6 +123,3 @@ button[disabled] {
   cursor: not-allowed;
 }
 </style>
-
-
-

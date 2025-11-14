@@ -1,4 +1,3 @@
-// SAE/src/stores/billetterie.js
 import { defineStore } from 'pinia'
 import BilletterieService from "@/services/billetterie.service.js";
 
@@ -14,7 +13,8 @@ export const useBilletterieStore = defineStore('billetterie', {
             }
         },
         async acheterBillet(nom) {
-            let response = await BilletterieService.acheterBillet(nom)
+            // utiliser la méthode publique `acheter` du service
+            let response = await BilletterieService.acheter(nom)
             if (response.error === 0) {
                 response.data.forEach(update => {
                     for (const key of Object.keys(this.billets)) {
@@ -24,6 +24,7 @@ export const useBilletterieStore = defineStore('billetterie', {
                 })
                 this.billets = { ...this.billets }
             }
+            return response
         }
     },
 })

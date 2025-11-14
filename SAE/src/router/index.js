@@ -3,6 +3,7 @@ import Programmation from "@/components/Programmation.vue";
 import Billetterie  from "@/components/Billetterie.vue";
 import Main  from "@/components/Main.vue";
 import Profile from "@/components/Profile.vue";
+import Panier from "@/components/Panier.vue";
 
 const routes = [
     {
@@ -16,6 +17,12 @@ const routes = [
         name: 'billetterie',
         component: Billetterie,
         meta: { titleKey: 'pageTitleBilletterie' }
+    },
+    {
+        path: '/panier',
+        name: 'panier',
+        component: Panier,
+        meta: { titleKey: 'pageTitlePanier' }
     },
     {
         path: '/',

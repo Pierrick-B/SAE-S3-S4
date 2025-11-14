@@ -1,4 +1,3 @@
-// SAE/src/datasource/data_billetterie.js
 const billets = {
     billets1Jour: [
         { "nom": "Billet 1 jour - jeudi", "prix": 10, "quantite": 100, "jours": ["jeudi"] },

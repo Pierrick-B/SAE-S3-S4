@@ -1,5 +1,6 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
+import { onMounted, computed, onUnmounted } from 'vue'
 import { useBilletterieStore } from '@/stores/billetterie.js'
 import billetterieService from '@/services/billetterie.service.js'
 import panierService from '@/services/panier.service.js'
@@ -7,7 +8,17 @@ import panierService from '@/services/panier.service.js'
 const { t } = useI18n()
 const billetterie = useBilletterieStore()
 
-billetterie.fetchBilletterie()
+// charger les données au chargement du composant
+onMounted(() => {
+  billetterie.fetchBilletterie()
+})
+
+// rafraîchir quand le panier modifie le stock ailleurs
+const _onBilletterieUpdated = () => {
+  billetterie.fetchBilletterie()
+}
+window.addEventListener('billetterie-updated', _onBilletterieUpdated)
+onUnmounted(() => window.removeEventListener('billetterie-updated', _onBilletterieUpdated))
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 import { reactive, computed } from 'vue';
 import billetterieService from '@/services/billetterie.service.js';
+import panierData from '@/datasource/data_panier.js';
 
 const LS_KEY = 'panierData';
 
@@ -12,6 +13,14 @@ function _load() {
     }
   } catch (e) {
     console.error('Erreur lecture localStorage panier', e);
+  }
+  // fallback : charger depuis data_panier.js (plain JS copy) et initialiser localStorage
+  try {
+    const initial = JSON.parse(JSON.stringify(panierData));
+    _save(initial);
+    return initial;
+  } catch (e) {
+    console.error('Erreur initialisation panier depuis data_panier', e);
   }
   return { items: [] };
 }

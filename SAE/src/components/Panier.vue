@@ -2,11 +2,61 @@
 import panierService from '@/services/panier.service.js'
 const panier = panierService.panier;
 const total = panierService.total;
+
+// Exporter le panier courant au format JS module (data_panier.js)
+function exporterDataPanier() {
+  try {
+    const plain = { items: panier.items.map(i => ({ id: i.id, nom: i.nom, prix: i.prix, quantite: i.quantite })) };
+    const content = `// fichier généré automatiquement
+const panierData = ${JSON.stringify(plain, null, 2)};
+
+export default panierData;\n`;
+    const blob = new Blob([content], { type: 'text/javascript;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data_panier.js';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    console.error('Erreur export data_panier', e);
+    alert('Impossible d\'exporter le panier');
+  }
+}
+
+// Sauvegarder le panier côté serveur via API POST /api/export-panier
+async function sauvegarderSurServeur() {
+  try {
+    const plain = { items: panier.items.map(i => ({ id: i.id, nom: i.nom, prix: i.prix, quantite: i.quantite })) };
+    const resp = await fetch('http://localhost:3000/api/export-panier', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(plain)
+    });
+    const json = await resp.json();
+    if (resp.ok && json.ok) {
+      alert('Fichier data_panier.js sauvegardé côté serveur. Chemin: ' + json.path);
+    } else {
+      console.error('Erreur serveur export', json);
+      alert('Erreur serveur lors de la sauvegarde: ' + (json.error || 'unknown'));
+    }
+  } catch (e) {
+    console.error('Erreur sauvegarde serveur', e);
+    alert('Impossible de contacter le serveur d\'export (http://localhost:3000).');
+  }
+}
 </script>
 
 <template>
   <div class="panier-container">
     <h2>Panier</h2>
+
+    <div class="actions" style="text-align:center;margin-bottom:12px;">
+      <button class="btn" @click="exporterDataPanier()">Exporter data_panier.js</button>
+      <button class="btn" style="margin-left:8px;" @click="sauvegarderSurServeur()">Sauvegarder côté serveur</button>
+    </div>
 
     <div v-if="panier.items.length === 0" class="empty">Votre panier est vide.</div>
 
@@ -27,7 +77,7 @@ const total = panierService.total;
 
     <div class="summary" v-if="panier.items.length > 0">
       <div class="total">Total : <span class="price">{{ total }}€</span></div>
-      <button class="btn primary" @click="panierService.passerAuPaiement()">Passer au paiement</button>
+      <router-link to="/payment" class="btn primary">Passer au paiement</router-link>
     </div>
   </div>
 </template>

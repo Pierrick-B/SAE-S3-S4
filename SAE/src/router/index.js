@@ -9,6 +9,7 @@ import ClassementHub from "@/components/ClassementHub.vue";
 import ClassementIndividuel from "@/components/ClassementIndividuel.vue";
 import ClassementEquipe from "@/components/ClassementEquipe.vue";
 import ClassementLeaderboard from "@/components/ClassementLeaderboard.vue";
+import Payment from "@/components/Payment.vue";
 
 const routes = [
     {
@@ -28,6 +29,12 @@ const routes = [
         name: 'panier',
         component: Panier,
         meta: { titleKey: 'pageTitlePanier' }
+    },
+    {
+        path: '/payment',
+        name: 'payment',
+        component: Payment,
+        meta: { titleKey: 'pageTitlePayment' }
     },
     {
         path: '/stands',

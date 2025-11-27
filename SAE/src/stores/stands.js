@@ -18,6 +18,38 @@ export const useStandsStore = defineStore('stands', {
         this.error = response.message || 'Impossible de récupérer les stands'
       }
       this.isLoading = false
+    },
+    
+    async updateStandStatus(standId, newStatus) {
+      const response = await StandsService.updateStandStatus(standId, newStatus)
+      if (response.error === 0) {
+        await this.fetchStands()
+      }
+      return response
+    },
+
+    async createStandRequest(standId, userId, userName, message) {
+      const response = await StandsService.createStandRequest(standId, userId, userName, message)
+      if (response.error === 0) {
+        await this.fetchStands()
+      }
+      return response
+    },
+
+    async approveRequest(standId) {
+      const response = await StandsService.approveRequest(standId)
+      if (response.error === 0) {
+        await this.fetchStands()
+      }
+      return response
+    },
+
+    async rejectRequest(standId) {
+      const response = await StandsService.rejectRequest(standId)
+      if (response.error === 0) {
+        await this.fetchStands()
+      }
+      return response
     }
   }
 })

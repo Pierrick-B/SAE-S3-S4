@@ -5,15 +5,15 @@ import { useStandsStore } from '@/stores/stands.js'
 
 const { t } = useI18n()
 const standsStore = useStandsStore()
-const stands = computed(() => standsStore.stands)
+const stands = computed(() => standsStore.stands.filter(s => s.prestataire))
 const isLoading = computed(() => standsStore.isLoading)
 const errorMessage = computed(() => standsStore.error)
 
 function formatActivities(stand) {
-  if (!stand.activites || stand.activites.length === 0) {
+  if (!stand.prestataire?.activites || stand.prestataire.activites.length === 0) {
     return [t('standsPage.noActivity')]
   }
-  return stand.activites
+  return stand.prestataire.activites
 }
 
 function onImageError(event) {
@@ -54,23 +54,23 @@ onMounted(() => {
         <article v-for="stand in stands" :key="stand.id" class="stand-card">
           <div class="media">
             <img
-              v-if="stand.images && stand.images.length"
-              :src="stand.images[0]"
-              :alt="stand.nom"
+              v-if="stand.prestataire.images && stand.prestataire.images.length"
+              :src="stand.prestataire.images[0]"
+              :alt="stand.prestataire.nom"
               @error="onImageError"
             >
             <div
               class="media-placeholder"
-              :class="{ 'is-visible': !stand.images || !stand.images.length }"
+              :class="{ 'is-visible': !stand.prestataire.images || !stand.prestataire.images.length }"
             >
-              {{ stand.nom }}
+              {{ stand.prestataire.nom }}
             </div>
           </div>
 
           <div class="card-body">
-            <p class="badge">{{ stand.categorie }}</p>
-            <h2>{{ stand.nom }}</h2>
-            <p class="desc">{{ stand.description }}</p>
+            <p class="badge">{{ stand.prestataire.categorie }}</p>
+            <h2>{{ stand.prestataire.nom }}</h2>
+            <p class="desc">{{ stand.prestataire.description }}</p>
 
             <div class="activities">
               <p class="label">{{ $t('standsPage.activities') }}</p>
@@ -81,7 +81,7 @@ onMounted(() => {
 
             <div class="contact">
               <p class="label">{{ $t('standsPage.contact') }}</p>
-              <p>{{ stand.contact?.responsable }} · {{ stand.contact?.email }}</p>
+              <p>{{ stand.prestataire.contact?.responsable }} · {{ stand.prestataire.contact?.email }}</p>
             </div>
           </div>
         </article>

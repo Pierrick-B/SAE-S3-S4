@@ -13,6 +13,8 @@ import Payment from "@/components/Payment.vue";
 import Map from "@/components/Map.vue"
 import Login from "@/components/Login.vue"
 import Register from "@/components/Register.vue"
+import OrganisateurStands from "@/components/OrganisateurStands.vue"
+import OrganisateurDemande from "@/components/OrganisateurDemande.vue"
 
 const routes = [
     {
@@ -100,6 +102,18 @@ const routes = [
         name: 'register',
         component: Register,
         meta: { titleKey: 'register' }
+    },
+    {
+        path: '/organisateur',
+        name: 'organisateur',
+        component: OrganisateurStands,
+        meta: { titleKey: 'pageTitleOrganisateur' }
+    },
+    {
+        path: '/organisateur/demande/:standId',
+        name: 'organisateur-demande',
+        component: OrganisateurDemande,
+        meta: { titleKey: 'pageTitleOrganisateurDemande' }
     }
 ]
 

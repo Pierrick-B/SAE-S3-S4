@@ -9,7 +9,10 @@
   const pages = computed(() => [
     { id: 1, name: t('pageTitleAccueil'), to: { name: 'accueil' } },
     { id: 2, name: t('pageTitleProgrammation'), to: { name: 'programmation' } },
-    { id: 3, name: t('pageTitleBilletterie'), to: { name: 'billetterie' } }
+    { id: 3, name: t('pageTitleBilletterie'), to: { name: 'billetterie' } },
+    { id: 4, name: t('pageTitleClassementIndividuel'), to: { name: 'classement-individuel' } },
+    { id: 5, name: t('pageTitleClassementEquipe'), to: { name: 'classement-equipe' } },
+    { id: 6, name: t('pageTitleLeaderboard'), to: { name: 'classement-leaderboard' } }
   ]);
 </script>
 

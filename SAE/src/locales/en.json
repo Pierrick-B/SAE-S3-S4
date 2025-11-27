@@ -30,6 +30,9 @@
   "pageTitleProgrammation": "Schedule",
   "pageTitleBilletterie": "Ticketing",
   "pageTitleProfile": "Profile",
+  "pageTitleClassementIndividuel": "Solo Leaderboards",
+  "pageTitleClassementEquipe": "Team Leaderboards",
+  "pageTitleLeaderboard": "Global Leaderboard",
   "profile": {
     "title": "User Profile",
     "info": "User Information",
@@ -38,5 +41,29 @@
     "favorites": "Favorite Stands",
     "registeredEvents": "Registered Events",
     "loading": "Loading profile..."
+  },
+  "classements": {
+    "heroLabel": "Leaderboards",
+    "individualHeroTitle": "Top Solo Players",
+    "individualHeroSubtitle": "Highlights from our one-on-one challenges across the convention.",
+    "teamHeroTitle": "Team Standings",
+    "teamHeroSubtitle": "Crews dominating collaborative activities and tournaments.",
+    "leaderboardHeroTitle": "Global Ranking",
+    "leaderboardHeroSubtitle": "See who collects the most points from stands and activities.",
+    "organizers": "Organizers",
+    "date": "Date",
+    "prize": "Prize",
+    "participants": "Participants",
+    "participant": "Participant",
+    "team": "Team",
+    "metric": "Performance",
+    "teamSize": "Team size",
+    "teamName": "Team name",
+    "points": "Points",
+    "standPoints": "Stand points",
+    "activityPoints": "Activity points",
+    "loading": "Loading leaderboards...",
+    "anonymous": "Anonymous participant",
+    "noMembers": "No members listed"
   }
 }

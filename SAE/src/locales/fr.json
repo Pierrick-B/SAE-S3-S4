@@ -30,6 +30,9 @@
   "pageTitleProgrammation": "Programmation",
   "pageTitleBilletterie": "Billetterie",
   "pageTitleProfile": "Profil",
+  "pageTitleClassementIndividuel": "Classements Individuels",
+  "pageTitleClassementEquipe": "Classements Équipe",
+  "pageTitleLeaderboard": "Leaderboard Global",
   "profile": {
     "title": "Profil Utilisateur",
     "info": "Informations Utilisateur",
@@ -38,5 +41,29 @@
     "favorites": "Stands Favoris",
     "registeredEvents": "Événements Inscrits",
     "loading": "Chargement du profil..."
+  },
+  "classements": {
+    "heroLabel": "Classements",
+    "individualHeroTitle": "Podiums Individuels",
+    "individualHeroSubtitle": "Les champion·ne·s qui brillent sur nos stands et compétitions solo.",
+    "teamHeroTitle": "Classements par Équipe",
+    "teamHeroSubtitle": "Les squads qui dominent les challenges collectifs.",
+    "leaderboardHeroTitle": "Leaderboard Général",
+    "leaderboardHeroSubtitle": "Un coup d'œil sur les fans qui engrangent le plus de points.",
+    "organizers": "Organisateurs",
+    "date": "Date",
+    "prize": "Récompense",
+    "participants": "Participants",
+    "participant": "Participant",
+    "team": "Équipe",
+    "metric": "Performance",
+    "teamSize": "Taille de l'équipe",
+    "teamName": "Nom de l'équipe",
+    "points": "Points",
+    "standPoints": "Sur stands",
+    "activityPoints": "Sur activités",
+    "loading": "Chargement des classements...",
+    "anonymous": "Participant anonyme",
+    "noMembers": "Aucun membre enregistré"
   }
 }

@@ -4,6 +4,9 @@ import Billetterie  from "@/components/Billetterie.vue";
 import Main  from "@/components/Main.vue";
 import Profile from "@/components/Profile.vue";
 import Panier from "@/components/Panier.vue";
+import ClassementIndividuel from "@/components/ClassementIndividuel.vue";
+import ClassementEquipe from "@/components/ClassementEquipe.vue";
+import ClassementLeaderboard from "@/components/ClassementLeaderboard.vue";
 
 const routes = [
     {
@@ -35,6 +38,24 @@ const routes = [
         name: 'profile',
         component: Profile,
         meta: { titleKey: 'pageTitleProfile' }
+    },
+    {
+        path: '/classements/individuels',
+        name: 'classement-individuel',
+        component: ClassementIndividuel,
+        meta: { titleKey: 'pageTitleClassementIndividuel' }
+    },
+    {
+        path: '/classements/equipes',
+        name: 'classement-equipe',
+        component: ClassementEquipe,
+        meta: { titleKey: 'pageTitleClassementEquipe' }
+    },
+    {
+        path: '/classements/leaderboard',
+        name: 'classement-leaderboard',
+        component: ClassementLeaderboard,
+        meta: { titleKey: 'pageTitleLeaderboard' }
     }
 ]
 

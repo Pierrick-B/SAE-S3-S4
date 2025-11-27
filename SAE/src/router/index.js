@@ -10,6 +10,9 @@ import ClassementIndividuel from "@/components/ClassementIndividuel.vue";
 import ClassementEquipe from "@/components/ClassementEquipe.vue";
 import ClassementLeaderboard from "@/components/ClassementLeaderboard.vue";
 import Payment from "@/components/Payment.vue";
+import Map from "@/components/Map.vue"
+import Login from "@/components/Login.vue"
+import Register from "@/components/Register.vue"
 
 const routes = [
     {
@@ -77,6 +80,26 @@ const routes = [
         name: 'classement-leaderboard',
         component: ClassementLeaderboard,
         meta: { titleKey: 'pageTitleLeaderboard' }
+    },
+    {
+        path: '/map',
+        name : 'map',
+        component : Map,
+        meta: { titleKey: 'map' }
+    }
+    ,
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: { titleKey: 'login' }
+    }
+    ,
+    {
+        path: '/register',
+        name: 'register',
+        component: Register,
+        meta: { titleKey: 'register' }
     }
 ]
 

@@ -51,6 +51,39 @@ class UserService {
         _save();
         return { error: 0, data: data[userIndex] };
     }
+
+    async createUser(payload) {
+        const data = _load();
+        // basic validation: unique login and email
+        const existsLogin = data.find(u => u.login === payload.login);
+        if (existsLogin) return { error: 2, message: 'Login already exists' };
+        const existsEmail = data.find(u => u.email === payload.email);
+        if (existsEmail) return { error: 3, message: 'Email already exists' };
+
+        const maxId = data.reduce((m, u) => (u.id > m ? u.id : m), 0);
+        const newUser = Object.assign({
+            id: maxId + 1,
+            name: payload.name || '',
+            email: payload.email || '',
+            login: payload.login || '',
+            password: payload.password || '',
+            role: payload.role || 'client',
+            favorites: payload.favorites || [],
+            registeredEvents: payload.registeredEvents || []
+        }, payload);
+
+        data.push(newUser);
+        users = data;
+        _save();
+        return { error: 0, data: newUser };
+    }
+
+    async findByLogin(login) {
+        const data = _load();
+        const user = data.find(u => u.login === login);
+        if (!user) return { error: 1, message: 'User not found' };
+        return { error: 0, data: user };
+    }
 }
 
 export default new UserService();

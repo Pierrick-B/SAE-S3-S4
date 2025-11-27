@@ -30,7 +30,8 @@
     </div>
     
     <div class="nav-right">
-      <button class="login-btn">{{ $t('login') }}</button>
+      <router-link class="login-btn" :to="{ name: 'login' }">{{ $t('login') }}</router-link>
+      <router-link class="login-btn" :to="{ name: 'register' }">{{ $t('register') || 'Inscription' }}</router-link>
       <LanguageButton></LanguageButton>
     </div>
   </nav>

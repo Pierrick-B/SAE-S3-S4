@@ -20,7 +20,7 @@ const user = computed(() => userStore.currentUser)
 
 const favoriteStands = computed(() => {
   if (!user.value) return []
-  return stands.filter(stand => user.value.favorites.includes(stand.id))
+  return stands.filter(stand => stand.map_coordinates)
 })
 
 const registeredEvents = computed(() => {

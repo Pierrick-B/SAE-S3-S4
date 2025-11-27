@@ -10,7 +10,8 @@
     { id: 1, name: t('pageTitleAccueil'), to: { name: 'accueil' } },
     { id: 2, name: t('pageTitleProgrammation'), to: { name: 'programmation' } },
     { id: 3, name: t('pageTitleBilletterie'), to: { name: 'billetterie' } },
-    { id: 4, name: t('pageTitleClassements'), to: { name: 'classements' } }
+    { id: 4, name: t('pageTitleStands'), to: { name: 'stands' } },
+    { id: 5, name: t('pageTitleClassements'), to: { name: 'classements' } }
   ]);
 </script>
 

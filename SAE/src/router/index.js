@@ -4,6 +4,7 @@ import Billetterie  from "@/components/Billetterie.vue";
 import Main  from "@/components/Main.vue";
 import Profile from "@/components/Profile.vue";
 import Panier from "@/components/Panier.vue";
+import Stands from "@/components/Stands.vue";
 import ClassementHub from "@/components/ClassementHub.vue";
 import ClassementIndividuel from "@/components/ClassementIndividuel.vue";
 import ClassementEquipe from "@/components/ClassementEquipe.vue";
@@ -27,6 +28,12 @@ const routes = [
         name: 'panier',
         component: Panier,
         meta: { titleKey: 'pageTitlePanier' }
+    },
+    {
+        path: '/stands',
+        name: 'stands',
+        component: Stands,
+        meta: { titleKey: 'pageTitleStands' }
     },
     {
         path: '/',

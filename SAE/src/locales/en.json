@@ -30,6 +30,7 @@
   "pageTitleProgrammation": "Schedule",
   "pageTitleBilletterie": "Ticketing",
   "pageTitleProfile": "Profile",
+  "pageTitleStands": "Stands",
   "pageTitleClassements": "Leaderboards Hub",
   "pageTitleClassementIndividuel": "Solo Leaderboards",
   "pageTitleClassementEquipe": "Team Leaderboards",
@@ -70,5 +71,19 @@
     "loading": "Loading leaderboards...",
     "anonymous": "Anonymous participant",
     "noMembers": "No members listed"
+  },
+  "standsPage": {
+    "heroBadge": "Exhibitors",
+    "heroTitle": "Explore our stands",
+    "heroSubtitle": "Meet publishers, food trucks, and fandom shops all in one hall.",
+    "loading": "Loading stands...",
+    "error": "Unable to load stands",
+    "dimensions": "Dimensions",
+    "surface": "Area",
+    "capacity": "Capacity",
+    "price": "Price",
+    "activities": "Activities",
+    "contact": "Contact",
+    "noActivity": "No activity available"
   }
 }

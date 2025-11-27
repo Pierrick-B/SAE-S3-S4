@@ -111,7 +111,7 @@ const entries = computed(() => ([
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  margin: -4rem auto 4rem;
+  margin: 2rem auto 4rem;
 }
 
 .card {
@@ -195,7 +195,7 @@ const entries = computed(() => ([
 
 @media (max-width: 768px) {
   .cards {
-    margin-top: -2rem;
+    margin-top: 1rem;
   }
 }
 </style>

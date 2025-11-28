@@ -90,13 +90,17 @@ async function submit() {
 <style scoped>
 .register-page { max-width: 520px; margin: 2rem auto; padding:1.5rem; background:#fff; border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,0.04) }
 .register-form { display:flex; flex-direction:column; gap:1rem }
-label { display:flex; flex-direction:column; font-weight:600 }
-input, select { padding:0.6rem 0.8rem; border-radius:6px; border:1px solid #ddd }
+label { display:flex; flex-direction:column; font-weight:600; text-transform: capitalize }
+input, select { padding:0.6rem 0.8rem; border-radius:6px; border:1px solid #ddd; font-family: Titillium, Arial, sans-serif }
 .actions { display:flex; justify-content:flex-end }
 button { padding:0.6rem 1rem; border-radius:999px; border:none; background:#1a1a1a; color:#fff }
 .error { color:#b00020 }
 
-/* Reuse login button styling */
+/* Title and page font consistent with site */
+.register-page { font-family: Titillium, Arial, sans-serif; color: #2c3e50 }
+.register-page h1 { font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace; font-size: 1.6rem; margin-bottom: 0.6rem }
+
+/* Reuse login button styling and force uppercase */
 .login-btn {
   background: #1a1a1a;
   color: #ffffff;
@@ -110,6 +114,7 @@ button { padding:0.6rem 1rem; border-radius:999px; border:none; background:#1a1a
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
 }
 .login-btn:hover {
   background: #333;

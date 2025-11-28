@@ -18,7 +18,18 @@ const LS_KEY = 'userDataV2'
 function _loadUsers() {
 	try {
 		const raw = localStorage.getItem(LS_KEY)
-		if (raw) return JSON.parse(raw)
+		if (raw) {
+			const stored = JSON.parse(raw)
+			if (Array.isArray(stored)) {
+				// merge defaults with stored users, but keep stored as authoritative for new accounts
+				const merged = [...initialUsers]
+				for (const s of stored) {
+					if (!merged.some(m => m.login === s.login)) merged.push(s)
+				}
+				return merged
+			}
+			// if stored is malformed, ignore it and fall back to defaults
+		}
 	} catch (e) {}
 	return initialUsers
 }

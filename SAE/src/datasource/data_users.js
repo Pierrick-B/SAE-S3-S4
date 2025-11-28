@@ -99,11 +99,31 @@ const users = [
     },
     {
         "id": 8,
-        "name": "test2",
-        "email": "test@test.test2",
-        "login": "test2",
-        "password": "test",
+        "name": "client",
+        "email": "client@client.client",
+        "login": "client",
+        "password": "client",
         "role": "client",
+        "favorites": [],
+        "registeredEvents": []
+    },
+    {
+        "id": 9,
+        "name": "prestataire",
+        "email": "prestataire@prestataire.prestataire",
+        "login": "prestataire",
+        "password": "prestataire",
+        "role": "prestataire",
+        "favorites": [],
+        "registeredEvents": []
+    },
+    {
+        "id": 10,
+        "name": "admin",
+        "email": "admin@admin.admin",
+        "login": "admin",
+        "password": "admin",
+        "role": "admin",
         "favorites": [],
         "registeredEvents": []
     }

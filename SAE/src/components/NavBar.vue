@@ -3,9 +3,13 @@
   import { useI18n } from 'vue-i18n'
   import { useLangStore } from "@/stores/langStore.js";
   import { computed } from 'vue'
+  import { useUserStore } from '@/stores/user.js'
+  import { useRouter } from 'vue-router'
 
   const { t } = useI18n()
   let lgButton = useLangStore();
+  const userStore = useUserStore()
+  const router = useRouter()
   const pages = computed(() => [
     { id: 1, name: t('pageTitleAccueil'), to: { name: 'accueil' } },
     { id: 2, name: t('pageTitleProgrammation'), to: { name: 'programmation' } },
@@ -30,8 +34,17 @@
     </div>
     
     <div class="nav-right">
-      <router-link class="login-btn" :to="{ name: 'login' }">{{ $t('login') }}</router-link>
-      <router-link class="login-btn" :to="{ name: 'register' }">{{ $t('register') || 'Inscription' }}</router-link>
+      <template v-if="userStore.currentUser">
+        <div class="user-info">
+          <span class="role-badge">{{ userStore.currentUser.role.toUpperCase() }}</span>
+          <span class="user-name">{{ userStore.currentUser.name }}</span>
+          <button class="logout-btn" @click="() => { userStore.currentUser = null; try{ localStorage.removeItem('currentUserId') }catch(e){}; router.push({ name: 'accueil' }) }">{{ $t('logout') || 'Déconnexion' }}</button>
+        </div>
+      </template>
+      <template v-else>
+        <router-link class="login-btn" :to="{ name: 'login' }">{{ $t('login') }}</router-link>
+        <router-link class="login-btn" :to="{ name: 'register' }">{{ $t('register') || 'Inscription' }}</router-link>
+      </template>
       <LanguageButton></LanguageButton>
     </div>
   </nav>
@@ -202,6 +215,45 @@ body {
   }
 }
 
+/* User info (when logged in) */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: Titillium, Arial, sans-serif;
+  color: #2c3e50;
+}
+.role-badge {
+  background: #f5f7fa;
+  color: #2c3e50;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  box-shadow: 0 1px 4px rgba(44,62,80,0.04);
+}
+.user-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.logout-btn {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid rgba(26,26,26,0.08);
+  padding: 0.5rem 0.9rem;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+  font-size: 0.85rem;
+  transition: all 0.18s ease;
+}
+.logout-btn:hover {
+  background: rgba(26,26,26,0.06);
+  transform: translateY(-1px);
+}
 @media (max-width: 992px) {
   .nav-links {
     gap: 1.5rem;

@@ -65,18 +65,17 @@ html, body {
 .image {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 85vh;
   overflow: hidden;
 }
 
-.image img {
-  height: 100vh;
-  width: auto;
-  min-width: 100vw;
+.image > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
   display: block;
 }
 

@@ -1,6 +1,8 @@
 // SAE/src/services/user.service.js
 import { users as initialUsers } from "@/datasource/data_users.js";
 
+const LS_KEY = 'userDataV2'
+
 let users = null;
 let prestataireRequests = null;
 
@@ -14,12 +16,33 @@ function _ensureRequests() {
 
 function _load() {
   if (users) return users;
-  users = _clone(initialUsers || []);
-  return users;
+  // Attempt to load persisted data from localStorage
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const raw = window.localStorage.getItem(LS_KEY)
+      if (raw) {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) {
+          users = parsed
+          return users
+        }
+      }
+    }
+  } catch (e) {
+    // ignore parsing errors and fall back to default
+  }
+  users = _clone(initialUsers || [])
+  return users
 }
 
 function _save() {
-  // no-op: persistence handled by higher layer (Pinia) if needed
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem(LS_KEY, JSON.stringify(users || []))
+    }
+  } catch (e) {
+    console.warn('Unable to save users to localStorage', e)
+  }
 }
 
 class UserService {

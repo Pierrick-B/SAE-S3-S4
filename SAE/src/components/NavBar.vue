@@ -41,10 +41,6 @@
           <li v-if="page.id === 5 && userStore.currentUser && userStore.currentUser.role === 'admin'">
             <router-link :to="{ name: 'gerer-presta' }">{{ 'GÉRER PRESTATAIRES' }}</router-link>
           </li>
-          <!-- insère le lien demande prestataire juste après Classements (id === 5) pour les clients, avec le même style que les autres liens -->
-          <li v-if="page.id === 5 && userStore.currentUser && userStore.currentUser.role === 'client'">
-            <router-link :to="{ name: 'demande-prestataire' }">{{ 'DEMANDER PRESTATAIRE' }}</router-link>
-          </li>
         </template>
       </ul>
     </div>

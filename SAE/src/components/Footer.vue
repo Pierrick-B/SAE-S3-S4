@@ -1,8 +1,16 @@
 <script setup>
 import LanguageButton from "@/components/LanguageButton.vue";
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '@/stores/user.js'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const userStore = useUserStore()
+const router = useRouter()
+
+function goToDemande() {
+  try { router.push({ name: 'demande-prestataire' }) } catch(e) {}
+}
 </script>
 
 <template>
@@ -29,6 +37,14 @@ const { t } = useI18n()
       <a href="mailto:contact@belfortpopcon.fr">{{ $t('footerContact') }}</a><br>
       {{ $t('footerCopyright') }}
     </small>
+    <!-- Bouton demande prestataire placé dans la zone grise du bas, à droite - visible seulement pour les clients -->
+    <button
+      v-if="userStore.currentUser && userStore.currentUser.role === 'client'"
+      class="demande-presta"
+      @click="goToDemande"
+      :aria-label="t('demander prestataire') || 'Demander prestataire'">
+      {{ (t('demander_prestataire') || 'DEMANDER PRESTATAIRE').toUpperCase() }}
+    </button>
   </div>
 </template>
 
@@ -95,6 +111,7 @@ const { t } = useI18n()
   background: rgba(235, 235, 235, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+  position: relative; /* pour positionner le bouton à droite */
 }
 
 .footer-bottom small {
@@ -114,6 +131,30 @@ const { t } = useI18n()
 
 .footer-bottom a:hover {
   color: #333;
+}
+
+/* Bouton placé sur la droite de la zone grise du bas */
+.demande-presta {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #1a1a1a;
+  color: #fff;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+}
+.demande-presta:hover { background: #333; transform: translateY(-50%) translateY(-3px); }
+
+@media (max-width: 480px) {
+  .demande-presta { right: 0.6rem; top: 50%; padding: 0.45rem 0.7rem; font-size: 0.8rem; }
 }
 
 /* Responsive */

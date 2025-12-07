@@ -1,189 +1,234 @@
-// javascript
 const stands = [
     {
-        "id": "emplacement-1",
-        "dimensions": {
-            "largeur_m": 10,
-            "profondeur_m": 10
+        id: "HALL-A-01",
+        label: "Neo Arcade",
+        zone: "Hall A",
+        dimensions: {
+            largeur_m: 10,
+            profondeur_m: 10
         },
-        "surface_m2": 100,
-        "tarif_emplacement_eur": 600,
-        "statut": "réservé",
-        "prestataire": {
-            "nom": "NovaGames - Éditeur",
-            "categorie": "éditeur-jeux",
-            "description": "Éditeur indépendant présentant son catalogue, démos jouables et vente de goodies.",
-            "activites": [
-                "Vente de goodies",
-                "Test de jeux vidéos",
-                "Concours de jeux vidéo"
-            ],
-            "besoins_logistiques": [
-                "accès à l'électricité",
-                "connexion internet",
-                "utilisation de la scène"
-            ],
-            "capacite_personnes": 40,
-            "contact": {
-                "email": "contact@novagames.example",
-                "tel": "+33 1 23 45 67 89",
-                "responsable": "Claire Martin"
+        surface_m2: 100,
+        tarif_emplacement_eur: 620,
+        infrastructures: ["electricite", "internet", "scene"],
+        status: "occupied",
+        occupant: {
+            prestataireId: 101,
+            companyName: "NovaGames - Éditeur",
+            category: "éditeur-jeux",
+            description: "Éditeur indépendant présentant ses licences premium, bornes arcades et tournois e-sport.",
+            activities: ["Freeplay", "Tournois e-sport", "Vente de goodies"],
+            needs: ["electricite", "internet", "scene"],
+            contact: {
+                responsable: "Claire Martin",
+                email: "contact@novagames.example",
+                tel: "+33 1 23 45 67 89"
             },
-            "images": [
-                "/images/stands/novagames-1.jpg",
-                "/images/stands/novagames-2.jpg"
-            ],
-            "created_at": "2025-11-11T08:00:00Z"
+            since: "2025-11-11T08:00:00Z"
         },
-        "map_infos":{
-            "type": "polygon",
-            "coords": [[[757.4817379765262,658.5364012816275],[804.1093659869573,665.8313000828934],[812.2148090994748,619.6302743415425],[766.4830458541114,612.1220744057366],[757.4817379765262,658.5364012816275]]],
-            "color":"00ff00"
-        }
-    },
-    {
-        "id": "emplacement-2",
-        "dimensions": {
-            "largeur_m": 8,
-            "profondeur_m": 6
-        },
-        "surface_m2": 48,
-        "tarif_emplacement_eur": 420,
-        "statut": "demande",
-        "map_infos":{
-            "type": "polygon",
-            "coords":[[[636.5771408872839,562.4068018051612],[646.0731792352947,512.1833100979047],[697.2462747773521,519.9911638507135],[688.277794115342,571.0587478555709],[636.5771408872839,562.4068018051612]]],
-            "color":"ff0000"
-        },
-        "demande": {
-            "id_demandeur": 2,
-            "nom_demandeur": "Jane Smith",
-            "date_demande": "2025-11-20T10:30:00Z",
-            "message": "Je souhaite réserver cet emplacement pour présenter mes jeux indépendants. J'aimerais avoir accès à l'électricité et internet pour les démos.",
-            "prestataire_propose": {
-                "nom": "PixelForge - Éditeur",
-                "categorie": "éditeur-jeux",
-                "description": "Studio mobile spécialisé en jeux rétro et souvenirs collectors.",
-                "activites": [
-                    "Vente de goodies",
-                    "Test de jeux vidéos"
-                ],
-                "besoins_logistiques": [
-                    "accès à l'électricité",
-                    "connexion internet"
-                ],
-                "capacite_personnes": 20,
-                "contact": {
-                    "email": "hello@pixelforge.example",
-                    "tel": "+33 6 12 34 56 78",
-                    "responsable": "Lucas Rey"
+        requests: [
+            {
+                requestId: "REQ-HALL-A-01-0001",
+                status: "approved",
+                submittedAt: "2025-10-30T09:12:00Z",
+                decisionAt: "2025-11-05T15:00:00Z",
+                prestataire: {
+                    id: 101,
+                    name: "Claire Martin",
+                    companyName: "NovaGames - Éditeur",
+                    category: "éditeur-jeux"
                 },
-                "images": [
-                    "/images/stands/pixelforge.jpg"
-                ]
-            }
-        }
-    },
-    {
-        "id": "emplacement-3",
-        "dimensions": {
-            "largeur_m": 5,
-            "profondeur_m": 2
-        },
-        "surface_m2": 10,
-        "tarif_emplacement_eur": 250,
-        "statut": "demande",
-        "map_infos":{
-            "type": "polygon",
-            "coords": [[[631.1626528063092,585.3273152746675],[676.0412115135127,592.7075345297495],[667.6371468126393,637.5007727831368],[623.0998699206997,630.3338546625947],[631.1626528063092,585.3273152746675]]],
-            "color":"0000ff"
-        },
-        "demande": {
-            "id_demandeur": 3,
-            "nom_demandeur": "Alice Brown",
-            "date_demande": "2025-11-22T14:15:00Z",
-            "message": "Bonjour, je suis intéressée par cet emplacement pour notre food truck. Nous aurions besoin d'accès à l'eau et l'électricité.",
-            "prestataire_propose": {
-                "nom": "StreetBites - Food Truck",
-                "categorie": "restauration",
-                "description": "Stand de restauration rapide proposant burgers artisanaux et options végétariennes.",
-                "activites": [
-                    "Vente de nourriture"
-                ],
-                "besoins_logistiques": [
-                    "accès à l'eau",
-                    "accès à l'électricité"
-                ],
-                "capacite_personnes": 6,
-                "contact": {
-                    "email": "contact@streetbites.example",
-                    "tel": "+33 7 11 22 33 44",
-                    "responsable": "Marion Dupont"
+                contact: {
+                    email: "contact@novagames.example",
+                    phone: "+33 1 23 45 67 89"
                 },
-                "images": [
-                    "/images/stands/streetbites.jpg"
-                ]
+                message: "Nous souhaitons installer trois bornes arcades, un corner boutique et projeter nos trailers.",
+                needs: ["electricite", "internet"],
+                decisionNotes: "Stand validé pour la zone tournois"
             }
+        ],
+        map_infos: {
+            type: "polygon",
+            coords: [[[757.4817379765262,658.5364012816275],[804.1093659869573,665.8313000828934],[812.2148090994748,619.6302743415425],[766.4830458541114,612.1220744057366],[757.4817379765262,658.5364012816275]]],
+            color: "00ff00"
         }
     },
     {
-        "id": "emplacement-4",
-        "dimensions": {
-            "largeur_m": 4,
-            "profondeur_m": 2
+        id: "HALL-A-02",
+        label: "Indie Station",
+        zone: "Hall A",
+        dimensions: {
+            largeur_m: 8,
+            profondeur_m: 6
         },
-        "surface_m2": 8,
-        "tarif_emplacement_eur": 180,
-        "statut": "vide"
-    },
-    {
-        "id": "emplacement-5",
-        "dimensions": {
-            "largeur_m": 10,
-            "profondeur_m": 10
-        },
-        "surface_m2": 100,
-        "tarif_emplacement_eur": 700,
-        "statut": "réservé",
-        "prestataire": {
-            "nom": "LicenPop - Stand licences films & séries",
-            "categorie": "licence",
-            "description": "Boutique officielle d'objets dérivés, animations cosplay et concours.",
-            "activites": [
-                "Vente de goodies",
-                "Concours de cosplay"
-            ],
-            "besoins_logistiques": [
-                "accès à l'électricité",
-                "utilisation de la scène"
-            ],
-            "capacite_personnes": 50,
-            "contact": {
-                "email": "partners@licenpop.example",
-                "tel": "+33 1 98 76 54 31",
-                "responsable": "Antoine Girard"
+        surface_m2: 48,
+        tarif_emplacement_eur: 480,
+        infrastructures: ["electricite", "internet"],
+        status: "pending",
+        occupant: null,
+        requests: [
+            {
+                requestId: "REQ-HALL-A-02-0003",
+                status: "pending",
+                submittedAt: "2025-11-20T10:30:00Z",
+                prestataire: {
+                    id: 2,
+                    name: "Jane Smith",
+                    companyName: "PixelForge Studio",
+                    category: "éditeur-jeux"
+                },
+                contact: {
+                    email: "hello@pixelforge.example",
+                    phone: "+33 6 12 34 56 78"
+                },
+                message: "Présentation de trois prototypes PC + boutique de prints, besoin d'un fond mural",
+                needs: ["electricite", "internet"],
+                notes: null
             },
-            "images": [
-                "/images/stands/licenpop-1.jpg"
-            ],
-            "animations": [
-                {
-                    "type": "concours-cosplay",
-                    "heure": "17:00"
-                }
-            ],
-            "created_at": "2025-11-11T10:00:00Z"
+            {
+                requestId: "REQ-HALL-A-02-0002",
+                status: "rejected",
+                submittedAt: "2025-11-18T18:10:00Z",
+                decisionAt: "2025-11-19T09:12:00Z",
+                decisionReason: "Stand positionné sur une zone thématique.",
+                prestataire: {
+                    id: 12,
+                    name: "Sasha K.",
+                    companyName: "RetroBits",
+                    category: "collectibles"
+                },
+                contact: {
+                    email: "hello@retrobits.example",
+                    phone: "+33 6 55 55 55 11"
+                },
+                message: "Proposition boutique consoles rétro.",
+                needs: ["electricite"],
+                notes: "Orienté vers zone B"
+            }
+        ],
+        map_infos: {
+            type: "polygon",
+            coords: [[[636.5771408872839,562.4068018051612],[646.0731792352947,512.1833100979047],[697.2462747773521,519.9911638507135],[688.277794115342,571.0587478555709],[636.5771408872839,562.4068018051612]]],
+            color: "ffaa00"
         }
     },
     {
-        "id": "emplacement-6",
-        "dimensions": {
-            "largeur_m": 6,
-            "profondeur_m": 4
+        id: "HALL-B-01",
+        label: "Street Bites",
+        zone: "Hall B",
+        dimensions: {
+            largeur_m: 5,
+            profondeur_m: 2
         },
-        "surface_m2": 24,
-        "tarif_emplacement_eur": 320,
-        "statut": "vide"
+        surface_m2: 10,
+        tarif_emplacement_eur: 260,
+        infrastructures: ["electricite", "eau"],
+        status: "pending",
+        occupant: null,
+        requests: [
+            {
+                requestId: "REQ-HALL-B-01-0001",
+                status: "pending",
+                submittedAt: "2025-11-22T14:15:00Z",
+                prestataire: {
+                    id: 3,
+                    name: "Alice Brown",
+                    companyName: "StreetBites",
+                    category: "restauration"
+                },
+                contact: {
+                    email: "contact@streetbites.example",
+                    phone: "+33 7 11 22 33 44"
+                },
+                message: "Food truck burgers / options veggie, besoin arrivée d'eau + prises 32A.",
+                needs: ["electricite", "eau"],
+                notes: null
+            }
+        ],
+        map_infos: {
+            type: "polygon",
+            coords: [[[631.1626528063092,585.3273152746675],[676.0412115135127,592.7075345297495],[667.6371468126393,637.5007727831368],[623.0998699206997,630.3338546625947],[631.1626528063092,585.3273152746675]]],
+            color: "ff0066"
+        }
+    },
+    {
+        id: "HALL-B-02",
+        label: "Makers Corner",
+        zone: "Hall B",
+        dimensions: {
+            largeur_m: 6,
+            profondeur_m: 4
+        },
+        surface_m2: 24,
+        tarif_emplacement_eur: 320,
+        infrastructures: ["electricite"],
+        status: "available",
+        occupant: null,
+        requests: [],
+        map_infos: null
+    },
+    {
+        id: "HALL-C-01",
+        label: "LicenPop Store",
+        zone: "Hall C",
+        dimensions: {
+            largeur_m: 10,
+            profondeur_m: 10
+        },
+        surface_m2: 100,
+        tarif_emplacement_eur: 720,
+        infrastructures: ["electricite", "scene"],
+        status: "occupied",
+        occupant: {
+            prestataireId: 205,
+            companyName: "LicenPop",
+            category: "licence",
+            description: "Boutique officielle d'objets dérivés, animations cosplay et concours.",
+            activities: ["Concours cosplay", "Rencontres photo"],
+            needs: ["electricite", "scene"],
+            contact: {
+                responsable: "Antoine Girard",
+                email: "partners@licenpop.example",
+                tel: "+33 1 98 76 54 31"
+            },
+            since: "2025-11-11T10:00:00Z"
+        },
+        requests: [
+            {
+                requestId: "REQ-HALL-C-01-0001",
+                status: "approved",
+                submittedAt: "2025-10-25T12:47:00Z",
+                decisionAt: "2025-10-28T09:00:00Z",
+                prestataire: {
+                    id: 205,
+                    name: "Antoine Girard",
+                    companyName: "LicenPop",
+                    category: "licence"
+                },
+                contact: {
+                    email: "partners@licenpop.example",
+                    phone: "+33 1 98 76 54 31"
+                },
+                message: "Animations cosplay quotidiennes + boutique exclusive.",
+                needs: ["scene", "electricite"],
+                decisionNotes: "Placer face scène principale"
+            }
+        ],
+        map_infos: null
+    },
+    {
+        id: "HALL-C-02",
+        label: "Creative Alley",
+        zone: "Hall C",
+        dimensions: {
+            largeur_m: 4,
+            profondeur_m: 2
+        },
+        surface_m2: 8,
+        tarif_emplacement_eur: 180,
+        infrastructures: ["electricite"],
+        status: "available",
+        occupant: null,
+        requests: []
     }
 ];
 

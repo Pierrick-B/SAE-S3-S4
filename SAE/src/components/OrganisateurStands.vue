@@ -12,26 +12,41 @@ const stands = computed(() => standsStore.stands)
 const isLoading = computed(() => standsStore.isLoading)
 const errorMessage = computed(() => standsStore.error)
 
+const stats = computed(() => {
+  return {
+    total: stands.value.length,
+    available: stands.value.filter((stand) => stand.status === 'available').length,
+    pending: stands.value.filter((stand) => stand.status === 'pending').length,
+    occupied: stands.value.filter((stand) => stand.status === 'occupied').length
+  }
+})
+
 onMounted(() => {
   standsStore.fetchStands()
 })
 
-function getStatusClass(stand) {
-  if (stand.statut === 'réservé') return 'status-reserved'
-  if (stand.statut === 'demande') return 'status-pending'
+function getStatusClass(status) {
+  if (status === 'occupied') return 'status-reserved'
+  if (status === 'pending') return 'status-pending'
   return 'status-empty'
 }
 
-function getStatusLabel(stand) {
-  if (stand.statut === 'réservé') return t('organisateur.reserved')
-  if (stand.statut === 'demande') return t('organisateur.pending')
+function getStatusLabel(status) {
+  if (status === 'occupied') return t('organisateur.reserved')
+  if (status === 'pending') return t('organisateur.pending')
   return t('organisateur.empty')
 }
 
-function handleClick(stand) {
-  if (stand.statut === 'demande') {
-    router.push({ name: 'organisateur-demande', params: { standId: stand.id } })
-  }
+function handleOpenRequests(stand) {
+  router.push({ name: 'organisateur-demande', params: { standId: stand.id } })
+}
+
+async function handleRelease(stand) {
+  await standsStore.releaseStand(stand.id)
+}
+
+function pendingCount(stand) {
+  return (stand.requests || []).filter((request) => request.status === 'pending').length
 }
 </script>
 
@@ -55,21 +70,22 @@ function handleClick(stand) {
       </div>
 
       <div v-else class="stands-container">
-        <div class="legend">
-          <h2>{{ $t('organisateur.legendTitle') }}</h2>
-          <div class="legend-items">
-            <div class="legend-item">
-              <span class="legend-color status-reserved"></span>
-              <span>{{ $t('organisateur.reserved') }}</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-color status-pending"></span>
-              <span>{{ $t('organisateur.pending') }}</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-color status-empty"></span>
-              <span>{{ $t('organisateur.empty') }}</span>
-            </div>
+        <div class="stats">
+          <div class="stat">
+            <span>{{ $t('organisateur.statTotal') }}</span>
+            <strong>{{ stats.total }}</strong>
+          </div>
+          <div class="stat">
+            <span>{{ $t('organisateur.statAvailable') }}</span>
+            <strong>{{ stats.available }}</strong>
+          </div>
+          <div class="stat">
+            <span>{{ $t('organisateur.statPending') }}</span>
+            <strong>{{ stats.pending }}</strong>
+          </div>
+          <div class="stat">
+            <span>{{ $t('organisateur.statOccupied') }}</span>
+            <strong>{{ stats.occupied }}</strong>
           </div>
         </div>
 
@@ -77,23 +93,45 @@ function handleClick(stand) {
           <div
             v-for="stand in stands"
             :key="stand.id"
-            class="stand-cell"
-            :class="[getStatusClass(stand), { clickable: stand.statut === 'demande' }]"
-            @click="handleClick(stand)"
+            class="stand-card"
           >
-            <div class="stand-id">{{ stand.id }}</div>
-            <div class="stand-name" v-if="stand.prestataire">
-              {{ stand.prestataire.nom }}
+            <div class="card-head">
+              <div>
+                <p class="stand-id">{{ stand.id }}</p>
+                <h3>{{ stand.label }}</h3>
+                <p class="stand-zone">{{ stand.zone }}</p>
+              </div>
+              <span class="status-pill" :class="getStatusClass(stand.status)">
+                {{ getStatusLabel(stand.status) }}
+              </span>
             </div>
-            <div class="stand-name" v-else-if="stand.demande?.prestataire_propose">
-              {{ stand.demande.prestataire_propose.nom }}
+
+            <p class="stand-details">
+              {{ stand.surface_m2 }} m² · {{ stand.dimensions.largeur_m }} × {{ stand.dimensions.profondeur_m }} m · {{ stand.tarif_emplacement_eur }} €
+            </p>
+
+            <div class="occupant" v-if="stand.occupant">
+              <p class="label">{{ $t('organisateur.currentOccupant') }}</p>
+              <p class="value">{{ stand.occupant.companyName }}</p>
+              <p class="subvalue">{{ stand.occupant.contact?.responsable }} · {{ stand.occupant.contact?.email }}</p>
             </div>
-            <div class="stand-size" v-else>
-              {{ stand.surface_m2 }} m² ({{ stand.dimensions.largeur_m }}×{{ stand.dimensions.profondeur_m }}m)
+
+            <div class="requests">
+              <p class="label">{{ $t('organisateur.pendingCount') }}</p>
+              <p class="value">{{ pendingCount(stand) }}</p>
             </div>
-            <div class="stand-status">{{ getStatusLabel(stand) }}</div>
-            <div v-if="stand.statut === 'demande'" class="stand-action">
-              {{ $t('organisateur.viewRequest') }}
+
+            <div class="card-actions">
+              <button class="btn" @click="handleOpenRequests(stand)">
+                {{ $t('organisateur.viewRequest') }}
+              </button>
+              <button
+                v-if="stand.status === 'occupied'"
+                class="btn btn-secondary"
+                @click="handleRelease(stand)"
+              >
+                {{ $t('organisateur.releaseStand') }}
+              </button>
             </div>
           </div>
         </div>
@@ -165,63 +203,80 @@ function handleClick(stand) {
   border-radius: 24px;
   padding: 2rem;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-}
-
-.legend {
-  margin-bottom: 2rem;
-}
-
-.legend h2 {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-  color: #1a1a1a;
-}
-
-.legend-items {
   display: flex;
+  flex-direction: column;
   gap: 2rem;
-  flex-wrap: wrap;
 }
 
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
 }
 
-.legend-color {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.stat {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 1rem;
+  text-align: center;
+}
+
+.stat span {
+  display: block;
+  color: #64748b;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.stat strong {
+  font-size: 2rem;
+  color: #0f172a;
 }
 
 .stands-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
-.stand-cell {
+.stand-card {
   padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  color: white;
+  border-radius: 18px;
+  box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
-.stand-cell.clickable {
-  cursor: pointer;
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.stand-cell.clickable:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+.stand-id {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.9rem;
+  color: #818cf8;
+  margin: 0;
+}
+
+.stand-zone {
+  margin: 0;
+  color: #475569;
+}
+
+.stand-details {
+  margin: 0;
+  color: #475569;
+}
+
+.status-pill {
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-weight: 600;
+  color: white;
 }
 
 .status-reserved {
@@ -236,40 +291,42 @@ function handleClick(stand) {
   background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
 }
 
-.stand-id {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.85rem;
-  opacity: 0.9;
-  font-weight: 500;
+.label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 0.3rem;
 }
 
-.stand-name {
-  font-size: 1.1rem;
+.value {
+  margin: 0;
+  font-weight: 700;
+}
+
+.subvalue {
+  margin: 0.2rem 0 0;
+  color: #475569;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  border-radius: 50px;
+  padding: 0.6rem 1.4rem;
   font-weight: 600;
-  line-height: 1.3;
+  cursor: pointer;
+  background: #1d4ed8;
+  color: white;
 }
 
-.stand-size {
-  font-size: 0.95rem;
-  font-weight: 500;
-  opacity: 0.95;
-}
-
-.stand-status {
-  font-size: 0.9rem;
-  opacity: 0.95;
-  margin-top: 0.5rem;
-}
-
-.stand-action {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 500;
-  backdrop-filter: blur(5px);
+.btn-secondary {
+  background: #475569;
 }
 
 @media (max-width: 768px) {
@@ -279,11 +336,6 @@ function handleClick(stand) {
 
   .stands-grid {
     grid-template-columns: 1fr;
-  }
-
-  .legend-items {
-    flex-direction: column;
-    gap: 1rem;
   }
 }
 </style>

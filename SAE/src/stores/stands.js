@@ -28,24 +28,32 @@ export const useStandsStore = defineStore('stands', {
       return response
     },
 
-    async createStandRequest(standId, userId, userName, message) {
-      const response = await StandsService.createStandRequest(standId, userId, userName, message)
+    async createStandRequest(standId, payload) {
+      const response = await StandsService.createStandRequest(standId, payload)
       if (response.error === 0) {
         await this.fetchStands()
       }
       return response
     },
 
-    async approveRequest(standId) {
-      const response = await StandsService.approveRequest(standId)
+    async approveRequest(standId, requestId, options = {}) {
+      const response = await StandsService.approveRequest(standId, requestId, options)
       if (response.error === 0) {
         await this.fetchStands()
       }
       return response
     },
 
-    async rejectRequest(standId) {
-      const response = await StandsService.rejectRequest(standId)
+    async rejectRequest(standId, requestId, options = {}) {
+      const response = await StandsService.rejectRequest(standId, requestId, options)
+      if (response.error === 0) {
+        await this.fetchStands()
+      }
+      return response
+    },
+
+    async releaseStand(standId) {
+      const response = await StandsService.releaseStand(standId)
       if (response.error === 0) {
         await this.fetchStands()
       }

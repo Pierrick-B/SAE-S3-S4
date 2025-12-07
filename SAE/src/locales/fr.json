@@ -82,13 +82,43 @@
     "heroSubtitle": "Éditeurs, food trucks et boutiques thématiques réunis sur un même espace.",
     "loading": "Chargement des stands...",
     "error": "Impossible de charger les stands",
-    "dimensions": "Dimensions",
-    "surface": "Surface",
-    "capacity": "Capacité",
-    "price": "Prix",
-    "activities": "Activités",
-    "contact": "Contact",
-    "noActivity": "Aucune activité renseignée"
+    "statusAvailable": "Disponible",
+    "statusPending": "Demandes en cours",
+    "statusOccupied": "Occupé",
+    "filter": {
+      "all": "Tous",
+      "available": "Disponibles",
+      "pending": "En demande",
+      "occupied": "Occupés"
+    },
+    "currentOccupant": "Prestataire en place",
+    "availableBlockTitle": "Emplacement libre",
+    "availableBlockSubtitle": "Aucun prestataire confirmé",
+    "pendingCount": "{count} demande(s) enregistrée(s)",
+    "infrastructure": {
+      "electricite": "Prises électriques",
+      "internet": "Internet",
+      "scene": "Accès scène",
+      "eau": "Arrivée d'eau"
+    },
+    "needElectricity": "Besoin d'électricité",
+    "needInternet": "Besoin d'internet",
+    "needStage": "Utilisation scène",
+    "needWater": "Besoin d'eau",
+    "requestCta": "Demander ce stand",
+    "requestAlreadyPending": "Votre demande est en attente",
+    "alreadyTaken": "Stand déjà attribué",
+    "onlyPrestataire": "Connectez-vous comme prestataire",
+    "requestTitle": "Nouvelle demande",
+    "requestCompany": "Nom de votre structure",
+    "requestEmail": "Email de contact",
+    "requestPhone": "Téléphone",
+    "requestMessage": "Pitch / besoins",
+    "requestNeeds": "Options logistiques",
+    "requestSubmit": "Envoyer la demande",
+    "requestSubmitting": "Envoi...",
+    "requestSuccess": "Demande enregistrée. Elle apparaît maintenant côté organisateur.",
+    "requestError": "Impossible d'enregistrer la demande"
   },
   "organisateur": {
     "heroBadge": "Organisateur",
@@ -122,6 +152,23 @@
     "price": "Tarif",
     "providerDetails": "Informations du prestataire",
     "description": "Description",
-    "contact": "Contact"
+    "contact": "Contact",
+    "statTotal": "Total",
+    "statAvailable": "Disponibles",
+    "statPending": "En demande",
+    "statOccupied": "Occupés",
+    "currentOccupant": "Prestataire actuel",
+    "pendingCount": "Demandes en file",
+    "releaseStand": "Libérer le stand",
+    "requestList": "Demandes reçues",
+    "requestStatus": {
+      "pending": "En attente",
+      "approved": "Validée",
+      "rejected": "Refusée"
+    },
+    "needs": "Besoins",
+    "decisionApproved": "Cette demande a été approuvée.",
+    "rejectReason": "Motif de refus",
+    "rejectPlaceholder": "Optionnel, visible par votre équipe"
   }
 }

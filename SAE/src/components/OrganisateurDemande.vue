@@ -1,39 +1,67 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import { useStandsStore } from '@/stores/stands.js'
+import { useUserStore } from '@/stores/user.js'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const standsStore = useStandsStore()
+const userStore = useUserStore()
+const { currentUser } = storeToRefs(userStore)
 
 const standId = route.params.standId
 const isLoading = ref(true)
 const stand = ref(null)
 const errorMessage = ref(null)
 const isProcessing = ref(false)
+const selectedRequestId = ref(null)
+const rejectReason = ref('')
+
+const requests = computed(() => stand.value?.requests || [])
+const selectedRequest = computed(() => requests.value.find((request) => request.requestId === selectedRequestId.value) || null)
+const hasPendingRequest = computed(() => requests.value.some((request) => request.status === 'pending'))
+const isPendingSelection = computed(() => selectedRequest.value?.status === 'pending')
+
+function hydrateStand() {
+  stand.value = standsStore.stands.find((s) => s.id === standId)
+  if (!stand.value) {
+    errorMessage.value = t('organisateur.standNotFound')
+    return
+  }
+  if (!stand.value.requests?.length) {
+    errorMessage.value = t('organisateur.noRequestPending')
+  }
+  const defaultRequest = stand.value.requests?.find((request) => request.status === 'pending')
+    || stand.value.requests?.[0]
+  selectedRequestId.value = defaultRequest?.requestId || null
+}
 
 onMounted(async () => {
   await standsStore.fetchStands()
-  stand.value = standsStore.stands.find(s => s.id === standId)
-  
-  if (!stand.value) {
-    errorMessage.value = t('organisateur.standNotFound')
-  } else if (stand.value.statut !== 'demande') {
-    errorMessage.value = t('organisateur.noRequestPending')
-  }
-  
+  hydrateStand()
   isLoading.value = false
 })
 
+watch(
+  () => standsStore.stands,
+  () => {
+    hydrateStand()
+  }
+)
+
 async function handleApprove() {
-  if (isProcessing.value) return
-  
+  if (!selectedRequest.value || !isPendingSelection.value) {
+    return
+  }
   isProcessing.value = true
-  const response = await standsStore.approveRequest(standId)
-  
+  const response = await standsStore.approveRequest(standId, selectedRequest.value.requestId, {
+    adminId: currentUser.value?.id
+  })
+
   if (response.error === 0) {
     router.push({ name: 'organisateur' })
   } else {
@@ -43,17 +71,26 @@ async function handleApprove() {
 }
 
 async function handleReject() {
-  if (isProcessing.value) return
-  
+  if (!selectedRequest.value || !isPendingSelection.value) {
+    return
+  }
   isProcessing.value = true
-  const response = await standsStore.rejectRequest(standId)
-  
+  const response = await standsStore.rejectRequest(standId, selectedRequest.value.requestId, {
+    reason: rejectReason.value
+  })
+
   if (response.error === 0) {
+    rejectReason.value = ''
     router.push({ name: 'organisateur' })
   } else {
     errorMessage.value = response.message
     isProcessing.value = false
   }
+}
+
+function selectRequest(requestId) {
+  selectedRequestId.value = requestId
+  errorMessage.value = null
 }
 
 function goBack() {
@@ -69,6 +106,15 @@ function formatDate(dateString) {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+function requestStatusLabel(status) {
+  const mapping = {
+    pending: t('organisateur.requestStatus.pending'),
+    approved: t('organisateur.requestStatus.approved'),
+    rejected: t('organisateur.requestStatus.rejected')
+  }
+  return mapping[status] || status
 }
 </script>
 
@@ -102,7 +148,9 @@ function formatDate(dateString) {
         <div class="request-card">
           <div class="card-header">
             <h2>{{ $t('organisateur.standDetails') }}</h2>
-            <span class="status-badge status-pending">{{ $t('organisateur.pending') }}</span>
+            <span class="status-badge" :class="hasPendingRequest ? 'status-pending' : 'status-reserved'">
+              {{ hasPendingRequest ? $t('organisateur.pending') : $t('organisateur.reserved') }}
+            </span>
           </div>
 
           <div class="stand-info">
@@ -121,67 +169,93 @@ function formatDate(dateString) {
             </div>
           </div>
 
-          <div v-if="stand.demande" class="request-info">
-            <h3>{{ $t('organisateur.requestDetails') }}</h3>
-            
-            <div class="info-row">
-              <span class="label">{{ $t('organisateur.requestFrom') }}:</span>
-              <span class="value">{{ stand.demande.nom_demandeur }}</span>
-            </div>
-            <div class="info-row">
-              <span class="label">{{ $t('organisateur.requestDate') }}:</span>
-              <span class="value">{{ formatDate(stand.demande.date_demande) }}</span>
-            </div>
-            
-            <div class="message-section">
-              <span class="label">{{ $t('organisateur.message') }}:</span>
-              <div class="message-content">{{ stand.demande.message }}</div>
+          <div class="requests-wrapper">
+            <div class="requests-list">
+              <h3>{{ $t('organisateur.requestList') }}</h3>
+              <p v-if="!requests.length" class="empty">{{ $t('organisateur.noRequestPending') }}</p>
+              <ul v-else>
+                <li
+                  v-for="request in requests"
+                  :key="request.requestId"
+                  :class="['request-item', { active: request.requestId === selectedRequestId }]"
+                  @click="selectRequest(request.requestId)"
+                >
+                  <div>
+                    <strong>{{ request.prestataire?.companyName }}</strong>
+                    <p>{{ formatDate(request.submittedAt) }}</p>
+                  </div>
+                  <span class="status-chip" :class="request.status">
+                    {{ requestStatusLabel(request.status) }}
+                  </span>
+                </li>
+              </ul>
             </div>
 
-            <div v-if="stand.demande.prestataire_propose" class="prestataire-info">
-              <h4>{{ $t('organisateur.providerDetails') }}</h4>
+            <div class="request-detail" v-if="selectedRequest">
+              <h3>{{ $t('organisateur.requestDetails') }}</h3>
+
               <div class="info-row">
-                <span class="label">{{ $t('organisateur.standName') }}:</span>
-                <span class="value">{{ stand.demande.prestataire_propose.nom }}</span>
+                <span class="label">{{ $t('organisateur.requestFrom') }}:</span>
+                <span class="value">{{ selectedRequest.prestataire?.companyName }}</span>
               </div>
               <div class="info-row">
-                <span class="label">{{ $t('organisateur.category') }}:</span>
-                <span class="value">{{ stand.demande.prestataire_propose.categorie }}</span>
+                <span class="label">{{ $t('organisateur.requestDate') }}:</span>
+                <span class="value">{{ formatDate(selectedRequest.submittedAt) }}</span>
               </div>
-              <div class="info-row">
-                <span class="label">{{ $t('organisateur.description') }}:</span>
-                <span class="value">{{ stand.demande.prestataire_propose.description }}</span>
-              </div>
+
               <div class="info-row">
                 <span class="label">{{ $t('organisateur.contact') }}:</span>
                 <span class="value">
-                  {{ stand.demande.prestataire_propose.contact.responsable }}<br>
-                  {{ stand.demande.prestataire_propose.contact.email }}<br>
-                  {{ stand.demande.prestataire_propose.contact.tel }}
+                  {{ selectedRequest.contact?.email }} · {{ selectedRequest.contact?.phone }}
                 </span>
+              </div>
+
+              <div class="message-section">
+                <span class="label">{{ $t('organisateur.message') }}:</span>
+                <div class="message-content">{{ selectedRequest.message }}</div>
+              </div>
+
+              <div class="info-row" v-if="selectedRequest.needs?.length">
+                <span class="label">{{ $t('organisateur.needs') }}:</span>
+                <span class="value">{{ selectedRequest.needs.join(', ') }}</span>
+              </div>
+
+              <div v-if="selectedRequest.status === 'rejected'" class="decision-info">
+                <p>{{ selectedRequest.decisionReason }}</p>
+              </div>
+
+              <div v-if="selectedRequest.status === 'approved'" class="decision-info">
+                <p>{{ $t('organisateur.decisionApproved') }}</p>
+              </div>
+
+              <div v-if="isPendingSelection" class="decision-form">
+                <label>
+                  {{ $t('organisateur.rejectReason') }}
+                  <input v-model="rejectReason" type="text" :placeholder="$t('organisateur.rejectPlaceholder')">
+                </label>
+
+                <div class="actions">
+                  <button 
+                    class="btn btn-approve" 
+                    @click="handleApprove"
+                    :disabled="isProcessing"
+                  >
+                    {{ isProcessing ? $t('organisateur.processing') : $t('organisateur.approve') }}
+                  </button>
+                  <button 
+                    class="btn btn-reject" 
+                    @click="handleReject"
+                    :disabled="isProcessing"
+                  >
+                    {{ isProcessing ? $t('organisateur.processing') : $t('organisateur.reject') }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
           <div v-if="errorMessage" class="error-message">
             {{ errorMessage }}
-          </div>
-
-          <div class="actions">
-            <button 
-              class="btn btn-approve" 
-              @click="handleApprove"
-              :disabled="isProcessing"
-            >
-              {{ isProcessing ? $t('organisateur.processing') : $t('organisateur.approve') }}
-            </button>
-            <button 
-              class="btn btn-reject" 
-              @click="handleReject"
-              :disabled="isProcessing"
-            >
-              {{ isProcessing ? $t('organisateur.processing') : $t('organisateur.reject') }}
-            </button>
           </div>
         </div>
       </div>
@@ -313,6 +387,10 @@ function formatDate(dateString) {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 }
 
+.status-reserved {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
 .stand-info,
 .request-info {
   display: flex;
@@ -321,52 +399,120 @@ function formatDate(dateString) {
 }
 
 .request-info {
-  background: #f9fafb;
-  padding: 1.5rem;
-  border-radius: 12px;
-}
+  .requests-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
 
-.request-info h3 {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.3rem;
-  color: #1a1a1a;
-  margin: 0 0 1rem 0;
-}
+  .requests-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
 
-.prestataire-info {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 2px solid #e5e7eb;
-}
+  .request-item {
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    background: #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
 
-.prestataire-info h4 {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.1rem;
-  color: #1a1a1a;
-  margin: 0 0 1rem 0;
-}
+  .request-item.active {
+    border-color: #3b82f6;
+    box-shadow: 0 5px 20px rgba(59, 130, 246, 0.15);
+  }
 
-.stand-info h3 {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.3rem;
-  color: #1a1a1a;
-  margin: 0 0 1rem 0;
-}
+  .status-chip {
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: white;
+  }
 
-.info-row {
-  display: flex;
-  gap: 1rem;
-  align-items: baseline;
-}
+  .status-chip.pending {
+    background: #2563eb;
+  }
 
-.label {
-  font-weight: 600;
-  color: #4b5563;
-  min-width: 140px;
-}
+  .status-chip.approved {
+    background: #059669;
+  }
 
-.value {
-  color: #1a1a1a;
+  .status-chip.rejected {
+    background: #dc2626;
+  }
+
+  .request-detail {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+
+  .decision-info {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    background: #ecfccb;
+    color: #365314;
+  }
+
+  .decision-form {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .decision-form input {
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 0.6rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 50px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    min-width: 180px;
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-approve {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+
+  .btn-reject {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: #6b7280;
+    color: white;
+  }
   flex: 1;
 }
 

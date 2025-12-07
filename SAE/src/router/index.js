@@ -15,7 +15,7 @@ import Login from "@/components/Login.vue"
 import Register from "@/components/Register.vue"
 import OrganisateurStands from "@/components/OrganisateurStands.vue"
 import OrganisateurDemande from "@/components/OrganisateurDemande.vue"
-import GererPresta from "@/components/gerer_presta.vue"
+import GererPresta from "@/components/GererPresta.vue"
 import RequestPresta from "@/components/RequestPresta.vue"
 
 const routes = [

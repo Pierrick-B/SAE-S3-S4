@@ -42,10 +42,6 @@ const serviceOptions = [
   { value: 'test_jeux', label: 'Test de jeux vidéo' },
   { value: 'concours', label: 'Concours / animation' },
   { value: 'vente_nourriture', label: 'Vente alimentaire' },
-  { value: 'utilisation_scene', label: 'Utilisation de la scène' },
-  { value: 'electricite', label: "Accès à l'électricité" },
-  { value: 'eau', label: "Accès à l'eau" },
-  { value: 'internet', label: 'Connexion internet' }
 ]
 
 const selectedServices = ref([])

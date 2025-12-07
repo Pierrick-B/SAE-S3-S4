@@ -15,6 +15,8 @@ import Login from "@/components/Login.vue"
 import Register from "@/components/Register.vue"
 import OrganisateurStands from "@/components/OrganisateurStands.vue"
 import OrganisateurDemande from "@/components/OrganisateurDemande.vue"
+import GererPresta from "@/components/gerer_presta.vue"
+import RequestPresta from "@/components/RequestPresta.vue"
 
 const routes = [
     {
@@ -114,6 +116,18 @@ const routes = [
         name: 'organisateur-demande',
         component: OrganisateurDemande,
         meta: { titleKey: 'pageTitleOrganisateurDemande' }
+    },
+    {
+        path: '/admin/prestataires',
+        name: 'gerer-presta',
+        component: GererPresta,
+        meta: { titleKey: 'pageTitleAdminPrestataires' }
+    },
+    {
+        path: '/demande-prestataire',
+        name: 'demande-prestataire',
+        component: RequestPresta,
+        meta: { titleKey: 'pageTitleDemandePrestataire' }
     }
 ]
 

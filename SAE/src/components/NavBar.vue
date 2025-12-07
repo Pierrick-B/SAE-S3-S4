@@ -5,6 +5,7 @@
   import { computed } from 'vue'
   import { useUserStore } from '@/stores/user.js'
   import { useRouter } from 'vue-router'
+  import logo from '@/images/logo.png'
 
   const { t } = useI18n()
   let lgButton = useLangStore();
@@ -17,19 +18,35 @@
     { id: 4, name: t('pageTitleStands'), to: { name: 'stands' } },
     { id: 5, name: t('pageTitleClassements'), to: { name: 'classements' } }
   ]);
+
+  function logout() {
+    userStore.currentUser = null
+    try { localStorage.removeItem('currentUserId') } catch(e) {}
+    try { router.push({ name: 'accueil' }) } catch(e) {}
+  }
 </script>
 
 <template>
   <nav id="navBar">
     <div class="logo">
-      <img src="/src/images/logo.png" alt="Logo" width="96" height="96">
+      <img :src="logo" alt="Logo" width="96" height="96">
     </div>
     
     <div class="nav-center">
       <ul class="nav-links">
-        <li v-for="page in pages" :key="page.id">
-          <router-link :to="page.to">{{ page.name.toUpperCase() }}</router-link>
-        </li>
+        <template v-for="page in pages" :key="page.id">
+          <li>
+            <router-link :to="page.to">{{ page.name.toUpperCase() }}</router-link>
+          </li>
+          <!-- insère le lien admin juste après la page avec id === 5 (Classements) -->
+          <li v-if="page.id === 5 && userStore.currentUser && userStore.currentUser.role === 'admin'">
+            <router-link :to="{ name: 'gerer-presta' }">{{ 'GÉRER PRESTATAIRES' }}</router-link>
+          </li>
+          <!-- insère le lien demande prestataire juste après Classements (id === 5) pour les clients, avec le même style que les autres liens -->
+          <li v-if="page.id === 5 && userStore.currentUser && userStore.currentUser.role === 'client'">
+            <router-link :to="{ name: 'demande-prestataire' }">{{ 'DEMANDER PRESTATAIRE' }}</router-link>
+          </li>
+        </template>
       </ul>
     </div>
     
@@ -38,8 +55,9 @@
         <div class="user-info">
           <span class="role-badge">{{ userStore.currentUser.role.toUpperCase() }}</span>
           <span class="user-name">{{ userStore.currentUser.name }}</span>
-          <button class="logout-btn" @click="() => { userStore.currentUser = null; try{ localStorage.removeItem('currentUserId') }catch(e){}; router.push({ name: 'accueil' }) }">{{ $t('logout') || 'Déconnexion' }}</button>
+          <button class="logout-btn" @click="logout">{{ $t('logout') || 'Déconnexion' }}</button>
         </div>
+        <!-- (le lien de demande prestataire est affiché dans la nav centrale à côté de 'Classements') -->
       </template>
       <template v-else>
         <router-link class="login-btn" :to="{ name: 'login' }">{{ $t('login') }}</router-link>
@@ -186,6 +204,7 @@ body {
 .login-btn:active {
   transform: translateY(0);
 }
+
 
 /* Responsive Design */
 @media (max-width: 1200px) {

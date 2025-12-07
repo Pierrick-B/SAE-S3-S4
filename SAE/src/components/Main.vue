@@ -128,7 +128,7 @@ html, body {
   color: hsl(0, 0%, 9%);
   text-align: justify;
   backdrop-filter: blur(8px);
-  padding: 2rem 2.5rem;
+  padding-top: 2rem;
   background-color: rgb(241, 241, 241);
   display: flex;
   justify-content: center;

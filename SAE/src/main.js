@@ -10,6 +10,7 @@ import en from './locales/en.json'
 
 import OpenLayersMap from "vue3-openlayers";
 import './styles/global.css'
+import { useUserStore } from '@/stores/user.js'
 
 const messages = {
   fr,
@@ -22,9 +23,14 @@ const i18n = createI18n({
   messages
 })
 
+const pinia = createPinia()
 const app = createApp(App)
 
-app.use(createPinia())
+app.use(pinia)
+
+const userStore = useUserStore(pinia)
+userStore.hydrateSession()
+
 app.use(router)
 app.use(i18n)
 app.use(OpenLayersMap);

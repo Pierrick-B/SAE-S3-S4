@@ -83,6 +83,7 @@
     "statusAvailable": "Available",
     "statusPending": "Pending requests",
     "statusOccupied": "Occupied",
+    "activities": "Activities",
     "filter": {
       "all": "All",
       "available": "Available",
@@ -111,12 +112,15 @@
     "requestCompany": "Company / booth name",
     "requestEmail": "Contact email",
     "requestPhone": "Phone",
-    "requestMessage": "Pitch & needs",
+    "requestNeedsDetails": "Detail your logistics/needs",
+    "requestSynopsis": "Public synopsis for the stand",
     "requestNeeds": "Logistics",
     "requestSubmit": "Send request",
     "requestSubmitting": "Sending...",
     "requestSuccess": "Request submitted. Organizers can review it now.",
-    "requestError": "Unable to record the request"
+    "requestError": "Unable to record the request",
+    "noActivity": "Details coming soon",
+    "infrastructureTitle": "Logistics"
   },
   "organisateur": {
     "heroBadge": "Organizer",
@@ -165,6 +169,8 @@
       "rejected": "Rejected"
     },
     "needs": "Needs",
+    "needsDetails": "Needs details",
+    "synopsis": "Public synopsis",
     "decisionApproved": "This request has been approved.",
     "rejectReason": "Rejection reason",
     "rejectPlaceholder": "Optional note for your staff"

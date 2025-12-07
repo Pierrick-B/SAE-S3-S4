@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useStandsStore } from '@/stores/stands.js'
@@ -10,14 +10,14 @@ const standsStore = useStandsStore()
 const userStore = useUserStore()
 const { currentUser } = storeToRefs(userStore)
 
-const statusFilter = ref('all')
 const requestPanel = reactive({
   isOpen: false,
   standId: null,
   companyName: '',
   contactEmail: '',
   contactPhone: '',
-  message: '',
+  needsDetails: '',
+  synopsis: '',
   needs: []
 })
 
@@ -27,32 +27,35 @@ const submissionState = reactive({
   isError: false
 })
 
-const logisticOptions = computed(() => ([
-  { value: 'electricite', label: t('standsPage.needElectricity') },
-  { value: 'internet', label: t('standsPage.needInternet') },
-  { value: 'scene', label: t('standsPage.needStage') },
-  { value: 'eau', label: t('standsPage.needWater') }
-]))
+const logisticOptions = [
+  { value: 'electricite', labelKey: 'standsPage.needElectricity' },
+  { value: 'internet', labelKey: 'standsPage.needInternet' },
+  { value: 'scene', labelKey: 'standsPage.needStage' },
+  { value: 'eau', labelKey: 'standsPage.needWater' }
+]
 
 const isLoading = computed(() => standsStore.isLoading)
 const errorMessage = computed(() => standsStore.error)
+const confirmedStands = computed(() => standsStore.stands.filter((stand) => stand.status === 'occupied' && stand.occupant))
+const availableStands = computed(() => standsStore.stands.filter((stand) => stand.status !== 'occupied'))
 const userRole = computed(() => currentUser.value?.role || null)
 const isPrestataire = computed(() => userRole.value === 'prestataire')
+const selectedStand = computed(() => standsStore.stands.find((stand) => stand.id === requestPanel.standId))
 
-const filteredStands = computed(() => {
-  if (statusFilter.value === 'all') {
-    return standsStore.stands
+function formatActivities(stand) {
+  if (!stand.occupant?.activities?.length) {
+    return [t('standsPage.noActivity')]
   }
-  return standsStore.stands.filter((stand) => stand.status === statusFilter.value)
-})
+  return stand.occupant.activities
+}
 
 function statusLabel(status) {
-  const mapping = {
+  const map = {
     available: t('standsPage.statusAvailable'),
     pending: t('standsPage.statusPending'),
     occupied: t('standsPage.statusOccupied')
   }
-  return mapping[status] || status
+  return map[status] || status
 }
 
 function pendingRequests(stand) {
@@ -63,19 +66,7 @@ function hasPendingRequestFromUser(stand) {
   if (!currentUser.value) {
     return false
   }
-  return pendingRequests(stand).some(
-    (request) => request.prestataire?.id === currentUser.value.id
-  )
-}
-
-function canRequestStand(stand) {
-  if (!isPrestataire.value) {
-    return false
-  }
-  if (stand.status === 'occupied') {
-    return false
-  }
-  return !hasPendingRequestFromUser(stand)
+  return pendingRequests(stand).some((request) => request.prestataire?.id === currentUser.value.id)
 }
 
 function openRequestPanel(stand) {
@@ -84,7 +75,8 @@ function openRequestPanel(stand) {
   requestPanel.companyName = currentUser.value?.name || ''
   requestPanel.contactEmail = currentUser.value?.email || ''
   requestPanel.contactPhone = ''
-  requestPanel.message = ''
+  requestPanel.needsDetails = ''
+  requestPanel.synopsis = ''
   requestPanel.needs = []
   submissionState.feedback = null
   submissionState.isError = false
@@ -110,13 +102,14 @@ async function submitRequest() {
     category: currentUser.value?.category || 'autre',
     contactEmail: requestPanel.contactEmail,
     contactPhone: requestPanel.contactPhone,
-    message: requestPanel.message,
+    needsDetails: requestPanel.needsDetails,
+    synopsis: requestPanel.synopsis,
     needs: [...requestPanel.needs]
   }
 
   const response = await standsStore.createStandRequest(requestPanel.standId, payload)
-
   submissionState.isSubmitting = false
+
   if (response.error === 0) {
     submissionState.feedback = t('standsPage.requestSuccess')
     submissionState.isError = false
@@ -143,24 +136,6 @@ onMounted(() => {
     </header>
 
     <div class="content">
-      <div class="toolbar">
-        <div class="filters">
-          <button
-            v-for="option in ['all', 'available', 'pending', 'occupied']"
-            :key="option"
-            :class="['filter-chip', { active: statusFilter === option }]"
-            @click="statusFilter = option"
-          >
-            {{ $t(`standsPage.filter.${option}`) }}
-          </button>
-        </div>
-        <div class="legend">
-          <span class="status-pill available">{{ $t('standsPage.statusAvailable') }}</span>
-          <span class="status-pill pending">{{ $t('standsPage.statusPending') }}</span>
-          <span class="status-pill occupied">{{ $t('standsPage.statusOccupied') }}</span>
-        </div>
-      </div>
-
       <div v-if="isLoading" class="status">
         <p>{{ $t('standsPage.loading') }}</p>
       </div>
@@ -170,62 +145,58 @@ onMounted(() => {
       </div>
 
       <div v-else class="stands-grid">
-        <article v-for="stand in filteredStands" :key="stand.id" class="stand-card">
-          <div class="card-header">
-            <div>
-              <p class="stand-zone">{{ stand.zone }}</p>
-              <h2>{{ stand.label }}</h2>
+        <article v-for="stand in confirmedStands" :key="stand.id" class="stand-card">
+          <header class="card-header">
+            <p class="stand-zone">{{ stand.zone }}</p>
+            <h2>{{ stand.label }}</h2>
+            <p class="stand-meta">{{ stand.surface_m2 }} m² — {{ stand.dimensions.largeur_m }} × {{ stand.dimensions.profondeur_m }} m</p>
+          </header>
+
+          <div class="body">
+            <div class="occupant">
+              <p class="label">{{ $t('standsPage.currentOccupant') }}</p>
+              <p class="value">{{ stand.occupant.companyName }}</p>
+              <p class="desc">{{ stand.occupant.description }}</p>
             </div>
-            <span class="status-pill" :class="stand.status">{{ statusLabel(stand.status) }}</span>
-          </div>
 
-          <p class="stand-meta">
-            {{ stand.dimensions.largeur_m }} × {{ stand.dimensions.profondeur_m }} m · {{ stand.surface_m2 }} m² · {{ stand.tarif_emplacement_eur }} €
-          </p>
+            <div class="activities">
+              <p class="label">{{ $t('standsPage.activities') }}</p>
+              <div class="chips">
+                <span class="chip" v-for="activity in formatActivities(stand)" :key="activity">{{ activity }}</span>
+              </div>
+            </div>
 
-          <div class="info-block" v-if="stand.occupant">
-            <p class="label">{{ $t('standsPage.currentOccupant') }}</p>
-            <p class="value">{{ stand.occupant.companyName }}</p>
-            <p class="subvalue">{{ stand.occupant.description }}</p>
-          </div>
-
-          <div class="info-block" v-else>
-            <p class="label">{{ $t('standsPage.availableBlockTitle') }}</p>
-            <p class="value">{{ $t('standsPage.availableBlockSubtitle') }}</p>
-            <p class="subvalue" v-if="pendingRequests(stand).length">
-              {{ $t('standsPage.pendingCount', { count: pendingRequests(stand).length }) }}
-            </p>
-          </div>
-
-          <div class="chips">
-            <span
-              v-for="infra in stand.infrastructures || []"
-              :key="infra"
-              class="chip"
-            >
-              {{ $t(`standsPage.infrastructure.${infra}`) }}
-            </span>
-          </div>
-
-          <div class="actions">
-            <button
-              v-if="canRequestStand(stand)"
-              class="btn-primary"
-              @click="openRequestPanel(stand)"
-            >
-              {{ $t('standsPage.requestCta') }}
-            </button>
-            <p v-else-if="hasPendingRequestFromUser(stand)" class="hint">
-              {{ $t('standsPage.requestAlreadyPending') }}
-            </p>
-            <p v-else-if="stand.status === 'occupied'" class="hint">
-              {{ $t('standsPage.alreadyTaken') }}
-            </p>
-            <p v-else-if="!isPrestataire" class="hint">
-              {{ $t('standsPage.onlyPrestataire') }}
-            </p>
           </div>
         </article>
+      </div>
+    </div>
+
+    <div v-if="isPrestataire && availableStands.length" class="prestataire-zone">
+      <div class="content">
+        <h2 class="section-title">{{ $t('standsPage.requestTitle') }}</h2>
+        <div class="available-grid">
+          <article v-for="stand in availableStands" :key="stand.id" class="available-card">
+            <div>
+              <p class="stand-zone">{{ stand.zone }}</p>
+              <h3>{{ stand.label }}</h3>
+              <p class="stand-meta">{{ stand.surface_m2 }} m² — {{ stand.dimensions.largeur_m }} × {{ stand.dimensions.profondeur_m }} m</p>
+              <p class="subtle">{{ statusLabel(stand.status) }}</p>
+            </div>
+
+            <div class="available-actions">
+              <button
+                class="btn-primary"
+                :disabled="hasPendingRequestFromUser(stand)"
+                @click="openRequestPanel(stand)"
+              >
+                {{ hasPendingRequestFromUser(stand) ? $t('standsPage.requestAlreadyPending') : $t('standsPage.requestCta') }}
+              </button>
+              <p class="hint" v-if="pendingRequests(stand).length">
+                {{ $t('standsPage.pendingCount', { count: pendingRequests(stand).length }) }}
+              </p>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
 
@@ -234,7 +205,7 @@ onMounted(() => {
         <div class="panel-header">
           <div>
             <p class="panel-kicker">{{ $t('standsPage.requestTitle') }}</p>
-            <h3>{{ requestPanel.standId }}</h3>
+            <h3>{{ selectedStand?.label || requestPanel.standId }}</h3>
           </div>
           <button class="close-button" @click="closeRequestPanel">×</button>
         </div>
@@ -256,19 +227,20 @@ onMounted(() => {
           </label>
 
           <label>
-            {{ $t('standsPage.requestMessage') }}
-            <textarea v-model="requestPanel.message" rows="5" required />
+            {{ $t('standsPage.requestNeedsDetails') }}
+            <textarea v-model="requestPanel.needsDetails" rows="4"></textarea>
+          </label>
+
+          <label>
+            {{ $t('standsPage.requestSynopsis') }}
+            <textarea v-model="requestPanel.synopsis" rows="5" required></textarea>
           </label>
 
           <div class="options">
             <p>{{ $t('standsPage.requestNeeds') }}</p>
             <label v-for="option in logisticOptions" :key="option.value">
-              <input
-                type="checkbox"
-                :value="option.value"
-                v-model="requestPanel.needs"
-              >
-              {{ option.label }}
+              <input type="checkbox" :value="option.value" v-model="requestPanel.needs">
+              {{ $t(option.labelKey) }}
             </label>
           </div>
 
@@ -331,42 +303,6 @@ onMounted(() => {
   margin: 2rem auto 4rem;
 }
 
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.filters {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.filter-chip {
-  border: 1px solid #cbd5f5;
-  background: #fff;
-  color: #0f172a;
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.filter-chip.active {
-  background: #312e81;
-  border-color: #312e81;
-  color: #fff;
-}
-
-.legend {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
 .status {
   text-align: center;
   padding: 2rem;
@@ -388,18 +324,18 @@ onMounted(() => {
 .stand-card {
   background: #fff;
   border-radius: 24px;
-  padding: 1.5rem;
+  padding: 1.5rem 1.8rem;
   box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.25rem;
 }
+
 
 .card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .stand-zone {
@@ -410,34 +346,31 @@ onMounted(() => {
   margin: 0;
 }
 
-h2 {
-  margin: 0.1rem 0 0;
-}
 
 .stand-meta {
   margin: 0;
   color: #475569;
-  font-size: 0.95rem;
-}
-
-.info-block {
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 1rem;
 }
 
 .label {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #94a3b8;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.35rem;
 }
 
 .value {
-  font-weight: 700;
   margin: 0;
+  font-weight: 700;
+  color: #0f172a;
 }
+
+.desc {
+  margin: 0.3rem 0 0;
+  color: #475569;
+}
+
 
 .subvalue {
   margin: 0.2rem 0 0;
@@ -458,47 +391,57 @@ h2 {
   font-size: 0.85rem;
 }
 
-.status-pill {
-  border-radius: 999px;
-  padding: 0.3rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
+.prestataire-zone {
+  background: #0f172a;
+  padding: 3rem 0;
+  color: white;
 }
 
-.status-pill.available {
-  background: #d9f99d;
-  color: #3f6212;
+.section-title {
+  margin: 0 0 1.5rem;
 }
 
-.status-pill.pending {
-  background: #fee2e2;
-  color: #b91c1c;
+.available-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
 }
 
-.status-pill.occupied {
-  background: #bfdbfe;
-  color: #1d4ed8;
+.available-card {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 18px;
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.actions {
-  margin-top: auto;
+.available-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 .btn-primary {
   background: #2563eb;
   color: #fff;
   border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 12px;
+  padding: 0.65rem 1.2rem;
+  border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
 }
 
-.hint {
-  color: #475569;
-  font-size: 0.85rem;
-  margin: 0.5rem 0 0;
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hint,
+.subtle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .request-panel {
@@ -589,8 +532,5 @@ h2 {
     grid-template-columns: 1fr;
   }
 
-  .request-panel {
-    width: 100%;
-  }
 }
 </style>

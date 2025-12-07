@@ -2,6 +2,8 @@
 import { defineStore } from 'pinia'
 import UserService from "@/services/user.service.js";
 
+const SESSION_KEY = 'currentUserId'
+
 export const useUserStore = defineStore('user', {
     state: () => ({
         currentUser: null,
@@ -11,18 +13,67 @@ export const useUserStore = defineStore('user', {
         // état pour les demandes de prestataire
         prestataireRequests: [],
         requestsLoading: false,
+        sessionHydrated: false,
     }),
     actions: {
+        setCurrentUser(user, { persist = true } = {}) {
+            this.currentUser = user ? { ...user } : null
+            if (!persist) {
+                return
+            }
+            if (typeof window === 'undefined' || !window.localStorage) {
+                return
+            }
+            try {
+                if (user) {
+                    window.localStorage.setItem(SESSION_KEY, String(user.id))
+                } else {
+                    window.localStorage.removeItem(SESSION_KEY)
+                }
+            } catch (error) {
+                console.warn('Impossible de persister la session', error)
+            }
+        },
+        clearSession() {
+            this.setCurrentUser(null)
+        },
+        async hydrateSession() {
+            if (this.sessionHydrated) {
+                return this.currentUser
+            }
+            this.sessionHydrated = true
+            let storedId = null
+            try {
+                if (typeof window !== 'undefined' && window.localStorage) {
+                    storedId = window.localStorage.getItem(SESSION_KEY)
+                }
+            } catch (error) {
+                console.warn('Lecture de session impossible', error)
+            }
+            if (!storedId) {
+                this.currentUser = null
+                return null
+            }
+            const response = await UserService.getUserProfile(storedId)
+            if (response.error === 0) {
+                this.currentUser = response.data
+                return response.data
+            }
+            this.clearSession()
+            return null
+        },
         async fetchUserProfile(userId) {
             let response = await UserService.getUserProfile(userId)
             if (response.error === 0) {
-                this.currentUser = response.data
+                const shouldPersist = this.currentUser && Number(this.currentUser.id) === Number(userId)
+                this.setCurrentUser(response.data, { persist: shouldPersist })
             }
         },
         async updateUserProfile(userId, updates) {
             let response = await UserService.updateUserProfile(userId, updates)
             if (response.error === 0) {
-                this.currentUser = response.data
+                const shouldPersist = this.currentUser && Number(this.currentUser.id) === Number(userId)
+                this.setCurrentUser(response.data, { persist: shouldPersist })
             }
         },
 

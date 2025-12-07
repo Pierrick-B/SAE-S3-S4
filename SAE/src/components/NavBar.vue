@@ -20,8 +20,7 @@
   ]);
 
   function logout() {
-    userStore.currentUser = null
-    try { localStorage.removeItem('currentUserId') } catch(e) {}
+    userStore.clearSession()
     try { router.push({ name: 'accueil' }) } catch(e) {}
   }
 </script>

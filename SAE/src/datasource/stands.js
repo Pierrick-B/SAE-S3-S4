@@ -42,6 +42,8 @@ const stands = [
                     phone: "+33 1 23 45 67 89"
                 },
                 message: "Nous souhaitons installer trois bornes arcades, un corner boutique et projeter nos trailers.",
+                needsDetails: "Nous souhaitons installer trois bornes arcades, un corner boutique et projeter nos trailers.",
+                synopsis: "Éditeur indépendant présentant ses licences premium, bornes arcades et tournois e-sport.",
                 needs: ["electricite", "internet"],
                 decisionNotes: "Stand validé pour la zone tournois"
             }
@@ -81,6 +83,8 @@ const stands = [
                     phone: "+33 6 12 34 56 78"
                 },
                 message: "Présentation de trois prototypes PC + boutique de prints, besoin d'un fond mural",
+                needsDetails: "Présentation de trois prototypes PC + boutique de prints, besoin d'un fond mural",
+                synopsis: "PixelForge Studio vient faire tester ses prochains jeux indépendants et vendre des prints exclusifs.",
                 needs: ["electricite", "internet"],
                 notes: null
             },
@@ -101,6 +105,8 @@ const stands = [
                     phone: "+33 6 55 55 55 11"
                 },
                 message: "Proposition boutique consoles rétro.",
+                needsDetails: "Proposition boutique consoles rétro avec vitrines sécurisées.",
+                synopsis: "RetroBits voulait proposer une sélection de consoles vintage et accessoires de collection.",
                 needs: ["electricite"],
                 notes: "Orienté vers zone B"
             }
@@ -140,6 +146,8 @@ const stands = [
                     phone: "+33 7 11 22 33 44"
                 },
                 message: "Food truck burgers / options veggie, besoin arrivée d'eau + prises 32A.",
+                needsDetails: "Food truck burgers / options veggie, besoin arrivée d'eau + prises 32A.",
+                synopsis: "StreetBites propose un menu street-food gourmand avec options veggie.",
                 needs: ["electricite", "eau"],
                 notes: null
             }
@@ -209,6 +217,8 @@ const stands = [
                     phone: "+33 1 98 76 54 31"
                 },
                 message: "Animations cosplay quotidiennes + boutique exclusive.",
+                needsDetails: "Animations cosplay quotidiennes + boutique exclusive. Besoin loge arrière et portants.",
+                synopsis: "Animations cosplay quotidiennes et boutique officielle d'objets dérivés.",
                 needs: ["scene", "electricite"],
                 decisionNotes: "Placer face scène principale"
             }

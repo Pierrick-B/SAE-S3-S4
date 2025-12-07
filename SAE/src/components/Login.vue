@@ -43,10 +43,8 @@ function submit() {
 		return
 	}
 
-	// set current user in the store
-	userStore.currentUser = found
-	// persist current user id for simple session
-	try { localStorage.setItem('currentUserId', String(found.id)) } catch (e) {}
+	// set current user in the store (persists session)
+	userStore.setCurrentUser(found)
 
 	// redirect depending on role (simple logic)
 	if (found.role === 'admin') {

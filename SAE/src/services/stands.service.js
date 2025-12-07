@@ -119,6 +119,8 @@ class StandsService {
       category,
       contactEmail,
       contactPhone,
+      needsDetails,
+      synopsis,
       message,
       needs = []
     } = payload || {};
@@ -136,6 +138,10 @@ class StandsService {
       return { error: 1, message: "Vous avez déjà une demande en attente pour ce stand" };
     }
 
+    const detailsText = needsDetails ?? '';
+    const synopsisText = synopsis ?? '';
+    const legacyMessage = message ?? detailsText;
+
     const newRequest = {
       requestId: generateRequestId(standId),
       status: "pending",
@@ -150,7 +156,9 @@ class StandsService {
         email: contactEmail || null,
         phone: contactPhone || null
       },
-      message: message || "",
+      message: legacyMessage,
+      needsDetails: detailsText,
+      synopsis: synopsisText,
       needs,
       notes: null
     };
@@ -190,7 +198,7 @@ class StandsService {
       prestataireId: targetRequest.prestataire?.id,
       companyName: targetRequest.prestataire?.companyName,
       category: targetRequest.prestataire?.category,
-      description: targetRequest.message,
+      description: targetRequest.synopsis || targetRequest.message || "",
       activities: [],
       needs: targetRequest.needs || [],
       contact: {

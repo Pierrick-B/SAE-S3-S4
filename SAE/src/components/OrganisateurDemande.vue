@@ -25,6 +25,8 @@ const requests = computed(() => stand.value?.requests || [])
 const selectedRequest = computed(() => requests.value.find((request) => request.requestId === selectedRequestId.value) || null)
 const hasPendingRequest = computed(() => requests.value.some((request) => request.status === 'pending'))
 const isPendingSelection = computed(() => selectedRequest.value?.status === 'pending')
+const requestNeedsDetails = computed(() => selectedRequest.value?.needsDetails || selectedRequest.value?.message || '')
+const requestSynopsis = computed(() => selectedRequest.value?.synopsis || selectedRequest.value?.message || '')
 
 function hydrateStand() {
   stand.value = standsStore.stands.find((s) => s.id === standId)
@@ -210,9 +212,14 @@ function requestStatusLabel(status) {
                 </span>
               </div>
 
-              <div class="message-section">
-                <span class="label">{{ $t('organisateur.message') }}:</span>
-                <div class="message-content">{{ selectedRequest.message }}</div>
+              <div class="message-section" v-if="requestNeedsDetails">
+                <span class="label">{{ $t('organisateur.needsDetails') }}:</span>
+                <div class="message-content">{{ requestNeedsDetails }}</div>
+              </div>
+
+              <div class="message-section" v-if="requestSynopsis">
+                <span class="label">{{ $t('organisateur.synopsis') }}:</span>
+                <div class="message-content">{{ requestSynopsis }}</div>
               </div>
 
               <div class="info-row" v-if="selectedRequest.needs?.length">

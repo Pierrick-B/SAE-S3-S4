@@ -85,6 +85,7 @@
     "statusAvailable": "Disponible",
     "statusPending": "Demandes en cours",
     "statusOccupied": "Occupé",
+    "activities": "Activités",
     "filter": {
       "all": "Tous",
       "available": "Disponibles",
@@ -113,12 +114,15 @@
     "requestCompany": "Nom de votre structure",
     "requestEmail": "Email de contact",
     "requestPhone": "Téléphone",
-    "requestMessage": "Pitch / besoins",
+    "requestNeedsDetails": "Détaillez vos besoins techniques",
+    "requestSynopsis": "Synopsis public du stand",
     "requestNeeds": "Options logistiques",
     "requestSubmit": "Envoyer la demande",
     "requestSubmitting": "Envoi...",
     "requestSuccess": "Demande enregistrée. Elle apparaît maintenant côté organisateur.",
-    "requestError": "Impossible d'enregistrer la demande"
+    "requestError": "Impossible d'enregistrer la demande",
+    "noActivity": "Information à venir",
+    "infrastructureTitle": "Besoins logistiques"
   },
   "organisateur": {
     "heroBadge": "Organisateur",
@@ -167,6 +171,8 @@
       "rejected": "Refusée"
     },
     "needs": "Besoins",
+    "needsDetails": "Détail des besoins",
+    "synopsis": "Synopsis public",
     "decisionApproved": "Cette demande a été approuvée.",
     "rejectReason": "Motif de refus",
     "rejectPlaceholder": "Optionnel, visible par votre équipe"

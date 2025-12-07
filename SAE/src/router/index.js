@@ -17,6 +17,7 @@ import OrganisateurStands from "@/components/OrganisateurStands.vue"
 import OrganisateurDemande from "@/components/OrganisateurDemande.vue"
 import GererPresta from "@/components/GererPresta.vue"
 import RequestPresta from "@/components/RequestPresta.vue"
+import { useUserStore } from '@/stores/user.js'
 
 const routes = [
     {
@@ -109,19 +110,19 @@ const routes = [
         path: '/organisateur',
         name: 'organisateur',
         component: OrganisateurStands,
-        meta: { titleKey: 'pageTitleOrganisateur' }
+        meta: { titleKey: 'pageTitleOrganisateur', requiresAdmin: true }
     },
     {
         path: '/organisateur/demande/:standId',
         name: 'organisateur-demande',
         component: OrganisateurDemande,
-        meta: { titleKey: 'pageTitleOrganisateurDemande' }
+        meta: { titleKey: 'pageTitleOrganisateurDemande', requiresAdmin: true }
     },
     {
         path: '/admin/prestataires',
         name: 'gerer-presta',
         component: GererPresta,
-        meta: { titleKey: 'pageTitleAdminPrestataires' }
+        meta: { titleKey: 'pageTitleAdminPrestataires', requiresAdmin: true }
     },
     {
         path: '/demande-prestataire',
@@ -134,6 +135,22 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes,
+})
+
+router.beforeEach(async (to, from, next) => {
+    const requiresAdmin = to.matched.some(route => route.meta?.requiresAdmin)
+    if (!requiresAdmin) {
+        return next()
+    }
+
+    const userStore = useUserStore()
+    await userStore.hydrateSession()
+
+    if (userStore.currentUser?.role === 'admin') {
+        return next()
+    }
+
+    next({ name: 'login', query: { redirect: to.fullPath, reason: 'admin' } })
 })
 
 export default router

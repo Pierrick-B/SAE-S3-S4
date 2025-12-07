@@ -43,8 +43,7 @@ async function submit() {
       console.warn('Dev write failed', e)
     }
 
-    userStore.currentUser = newUser
-    try { localStorage.setItem('currentUserId', String(newUser.id)) } catch (e) {}
+    userStore.setCurrentUser(newUser)
     router.push({ name: 'profile', params: { userId: newUser.id } })
   } finally {
     loading.value = false

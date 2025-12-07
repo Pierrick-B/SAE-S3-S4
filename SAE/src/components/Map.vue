@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="map-page">
     <!-- Mode normal : affichage de la map principale -->
     <ol-map 
       v-if="!showInteriorMap"
-      style="height:400px; border: 2px solid red; width: 600px" 
+      class="map-container"
       :pixel-ratio="1">
 
       <ol-view 
         :projection="projection"
         :center="[imgWidth/2, imgHeight/2]" 
-        :zoom="1" 
+        :zoom="initialZoom" 
       />
 
       <ol-image-layer>
@@ -73,18 +73,18 @@
     </ol-map>
 
     <!-- Mode carte intérieure : affichage des stands intérieurs -->
-    <div v-if="showInteriorMap">
-      <button @click="closeInteriorMap" style="margin-bottom: 10px;">
+    <div v-if="showInteriorMap" class="interior-wrapper">
+      <button @click="closeInteriorMap" class="back-button">
         ← Retour à la carte principale
       </button>
       <ol-map 
-        style="height:400px; border: 2px solid red; width: 600px" 
+        class="map-container"
         :pixel-ratio="1">
 
         <ol-view 
           :projection="projection"
           :center="[imgWidth/2, imgHeight/2]" 
-          :zoom="1" 
+          :zoom="initialZoom" 
         />
 
         <ol-image-layer>
@@ -138,6 +138,46 @@
   </div>
 </template>
 
+<style scoped>
+.map-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.map-container {
+  width: 90vw;
+  height: 82vh;
+  max-width: 1400px;
+  border: 2px solid #d0d0d0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  background: #fff;
+}
+
+.interior-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-button {
+  align-self: flex-start;
+  margin-left: 2vw;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.back-button:hover {
+  background: #efefef;
+}
+</style>
+
 <script setup>
 import { ref, reactive, inject, computed } from 'vue'
 import { pointerMove } from 'ol/events/condition'
@@ -147,6 +187,8 @@ import stands from '@/datasource/stands.js'
 const imgWidth = 1436
 const imgHeight = 976
 const extent = [0, 0, imgWidth, imgHeight]
+// Increase initial zoom so the image appears larger
+const initialZoom = ref(2.1)
 
 const polygons = computed(() => {
   return stands

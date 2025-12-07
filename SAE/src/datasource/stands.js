@@ -159,25 +159,9 @@ const stands = [
         }
     },
     {
-        id: "HALL-B-02",
-        label: "Makers Corner",
-        zone: "extérieur",
-        dimensions: {
-            largeur_m: 6,
-            profondeur_m: 4
-        },
-        surface_m2: 24,
-        tarif_emplacement_eur: 320,
-        infrastructures: ["electricite"],
-        status: "available",
-        occupant: null,
-        requests: [],
-        map_infos: null
-    },
-    {
         id: "HALL-C-01",
-        label: "LicenPop Store",
-        zone: "Hall C",
+        label: "Stand Extérieur 5",
+        zone: "extérieur",
         dimensions: {
             largeur_m: 10,
             profondeur_m: 10
@@ -223,7 +207,11 @@ const stands = [
                 decisionNotes: "Placer face scène principale"
             }
         ],
-        map_infos: null
+        map_infos: {
+            type: "polygon",
+            coords: [[[631.1626528063092,585.3273152746675],[676.0412115135127,592.7075345297495],[667.6371468126393,637.5007727831368],[623.0998699206997,630.3338546625947],[631.1626528063092,585.3273152746675]]],
+            color: "#ff0066"
+        }
     },
     {
         id: "HALL-C-02",
@@ -257,7 +245,7 @@ const stands = [
         map_infos: {
             type: "polygon",
             coords: [[[835.58646101972, 517.8595438986426], [844.0742691171718, 469.2099121205654], [1034.739421745296, 511.2349131884364], [998.0969331294675, 555.1230916435529], [835.58646101972, 517.8595438986426]]],
-            color: "#9C27B0"
+            color: "#FF5722"
         }
     },
     {
@@ -683,6 +671,23 @@ const stands = [
             type: "polygon",
             coords: [[[830.7786041987031,271.6869310323591],[1044.761766576908,271.6869310323591],[1044.761766576908,351.75110084836535],[830.7786041987031,351.75110084836535],[830.7786041987031,271.6869310323591]]],
             color: "#00BCD4"
+        }
+    },
+    {
+        id: "EXT-STAND-19",
+        label: "Stand Extérieur 19",
+        zone: "extérieur",
+        dimensions: { largeur_m: 10, profondeur_m: 10 },
+        surface_m2: 100,
+        tarif_emplacement_eur: 620,
+        infrastructures: ["electricite"],
+        status: "available",
+        occupant: null,
+        requests: [],
+        map_infos: {
+            type: "polygon",
+            coords: [[[777.0924332613835,592.054285868116],[786.3181798646212,548.4189978798295],[830.4521568584883,554.4032659467945],[822.4731327692016,599.0359319462419],[777.0924332613835,592.054285868116]]],
+            color: "#E91E63"
         }
     }
 ];

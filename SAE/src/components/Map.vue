@@ -241,7 +241,14 @@ const isGymSelected = computed(() => {
 
 function onHover(event) {
   const f = event.selected && event.selected[0]
-  hoveredId.value = f ? f.get('id') : null
+  // Only apply hover to polygons, not to markers
+  if (f) {
+    const id = f.get('id')
+    const isMarker = markers.some(m => m.id === id)
+    hoveredId.value = isMarker ? null : id
+  } else {
+    hoveredId.value = null
+  }
 }
 
 function onSelect(event) {

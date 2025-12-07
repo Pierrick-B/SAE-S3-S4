@@ -1,6 +1,7 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue';
 import Footer from "@/components/Footer.vue";
+
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { watch, onMounted } from 'vue'
@@ -29,7 +30,7 @@ watch(() => t(route.meta.titleKey || 'pageTitleAccueil'), updateTitle)
         </main>
         <Footer></Footer>
     </div>
-  
+
 </template>
 
 <style scoped>

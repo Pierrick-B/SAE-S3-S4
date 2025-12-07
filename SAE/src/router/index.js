@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import Programmation from "@/components/Programmation.vue";
 import Billetterie  from "@/components/Billetterie.vue";
 import Main  from "@/components/Main.vue";
@@ -10,14 +10,14 @@ import ClassementIndividuel from "@/components/ClassementIndividuel.vue";
 import ClassementEquipe from "@/components/ClassementEquipe.vue";
 import ClassementLeaderboard from "@/components/ClassementLeaderboard.vue";
 import Payment from "@/components/Payment.vue";
-import Map from "@/components/Map.vue"
-import Login from "@/components/Login.vue"
-import Register from "@/components/Register.vue"
-import OrganisateurStands from "@/components/OrganisateurStands.vue"
-import OrganisateurDemande from "@/components/OrganisateurDemande.vue"
-import GererPresta from "@/components/GererPresta.vue"
-import RequestPresta from "@/components/RequestPresta.vue"
-import { useUserStore } from '@/stores/user.js'
+import Map from "@/components/Map.vue";
+import Login from "@/components/Login.vue";
+import Register from "@/components/Register.vue";
+import OrganisateurStands from "@/components/OrganisateurStands.vue";
+import OrganisateurDemande from "@/components/OrganisateurDemande.vue";
+import GererPresta from "@/components/GererPresta.vue";
+import RequestPresta from "@/components/RequestPresta.vue";
+import { useUserStore } from '@/stores/user.js';
 
 const routes = [
     {

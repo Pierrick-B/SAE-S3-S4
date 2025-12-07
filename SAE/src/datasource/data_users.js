@@ -126,16 +126,6 @@ const users = [
         "role": "admin",
         "favorites": [],
         "registeredEvents": []
-    },
-    {
-        "id": 11,
-        "name": "caca",
-        "email": "caca@caca.caca",
-        "login": "caca",
-        "password": "caca",
-        "role": "prestataire",
-        "favorites": [],
-        "registeredEvents": []
     }
 ]
 

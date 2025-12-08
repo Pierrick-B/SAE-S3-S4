@@ -43,7 +43,7 @@
         </div>
 
         <div v-else-if="selected === 'applepay' || selected === 'googlepay'" class="wallet-form">
-          <label>Identifiant portefeuille<input v-model="methodDetails.walletId" placeholder="Identifiant Apple/Google Pay" /></label>
+          <label>Identifiant portefeuille<input v-model="methodDetails.walletId" placeholder="Identifiant " /></label>
           <label>Mot de passe portefeuille<input v-model="methodDetails.walletPassword" placeholder="Votre mot de passe" type="password" /></label>
         </div>
       </div>

@@ -16,22 +16,29 @@ function _ensureRequests() {
 
 function _load() {
   if (users) return users;
-  // Attempt to load persisted data from localStorage
+  users = _clone(initialUsers || [])
+  // Attempt to load persisted data from localStorage and merge
   try {
     if (typeof window !== 'undefined' && window.localStorage) {
       const raw = window.localStorage.getItem(LS_KEY)
       if (raw) {
-        const parsed = JSON.parse(raw)
-        if (Array.isArray(parsed)) {
-          users = parsed
-          return users
+        const stored = JSON.parse(raw)
+        if (Array.isArray(stored)) {
+          // merge stored into users
+          for (const s of stored) {
+            const existing = users.find(u => Number(u.id) === Number(s.id))
+            if (existing) {
+              Object.assign(existing, s)
+            } else {
+              users.push(_clone(s))
+            }
+          }
         }
       }
     }
   } catch (e) {
-    // ignore parsing errors and fall back to default
+    // ignore parsing errors
   }
-  users = _clone(initialUsers || [])
   return users
 }
 

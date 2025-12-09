@@ -126,6 +126,16 @@ const users = [
         "role": "admin",
         "favorites": [],
         "registeredEvents": []
+    },
+    {
+        "id": 3,
+        "name": "Test",
+        "email": "test@test.com",
+        "login": "test",
+        "password": "test",
+        "role": "client",
+        "favorites": [],
+        "registeredEvents": []
     }
 ]
 

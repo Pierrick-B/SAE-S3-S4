@@ -37,10 +37,10 @@ const { t } = useI18n()
         </div>
       </div>
       <div class="misc-item">
-        <div class="carte">
+        <router-link class="carte" :to="{ name: 'map' }">
           <img src="../images/carte.jpg" style="object-position: center 50%;">
           <p class="titre">{{ $t('carte') }}</p>
-        </div>
+        </router-link>
       </div>
     </div>
   </main>

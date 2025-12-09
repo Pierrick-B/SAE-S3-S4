@@ -3,6 +3,8 @@ import LanguageButton from "@/components/LanguageButton.vue";
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user.js'
 import { useRouter } from 'vue-router'
+import panierStore from '@/stores/panier.js'
+import logo from '@/images/logo.png'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -11,12 +13,16 @@ const router = useRouter()
 function goToDemande() {
   try { router.push({ name: 'demande-prestataire' }) } catch(e) {}
 }
+
+function goToPanier() {
+  try { router.push({ name: 'panier' }) } catch(e) { router.push('/panier') }
+}
 </script>
 
 <template>
   <footer id="footer">
     <div class="footer-left">
-      <img src="/src/images/logo.png" alt="Logo Pop Con" width="96" height="96" />
+      <img :src="logo" alt="Logo Pop Con" width="96" height="96" />
       <span class="brand">{{ $t('footerBrand') }}</span>
     </div>
 
@@ -46,6 +52,15 @@ function goToDemande() {
       {{ (t('demander_prestataire') || 'DEMANDER PRESTATAIRE').toUpperCase() }}
     </button>
   </div>
+
+  <!-- Bouton panier flottant (hors du footer) : réel bouton fixe en bas à droite de l'écran -->
+  <button
+    v-if="panierStore && panierStore.panier && panierStore.panier.items && panierStore.panier.items.length > 0"
+    class="go-panier"
+    @click="goToPanier"
+    :aria-label="t('voir_panier') || 'Voir le panier'">
+    {{ (t('voir_panier') || 'PANIER').toUpperCase() }}
+  </button>
 </template>
 
 <style scoped>
@@ -153,8 +168,33 @@ function goToDemande() {
 }
 .demande-presta:hover { background: #333; transform: translateY(-50%) translateY(-3px); }
 
+/* Bouton panier flottant, placé immédiatement à gauche du bouton demande-presta */
+.go-panier {
+  position: fixed;
+  right: 1.2rem; /* distance depuis la droite de la fenêtre */
+  top: 1.2rem;   /* positionné en haut */
+  z-index: 1200; /* au-dessus des autres éléments */
+  background: #111827;
+  color: #fff;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.go-panier:hover { background: #2b2f35; transform: translateY(-3px); }
+
 @media (max-width: 480px) {
   .demande-presta { right: 0.6rem; top: 50%; padding: 0.45rem 0.7rem; font-size: 0.8rem; }
+  /* pour mobile, placer le bouton en haut à droite mais avec un petit offset pour ne pas gêner le header */
+  .go-panier { right: 0.8rem; top: 0.8rem; padding: 0.42rem 0.68rem; font-size: 0.78rem; }
 }
 
 /* Responsive */

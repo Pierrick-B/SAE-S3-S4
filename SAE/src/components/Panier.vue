@@ -54,8 +54,7 @@ async function sauvegarderSurServeur() {
     <h2>Panier</h2>
 
     <div class="actions" style="text-align:center;margin-bottom:12px;">
-      <button class="btn" @click="exporterDataPanier()">Exporter data_panier.js</button>
-      <button class="btn" style="margin-left:8px;" @click="sauvegarderSurServeur()">Sauvegarder côté serveur</button>
+
     </div>
 
     <div v-if="panier.items.length === 0" class="empty">Votre panier est vide.</div>

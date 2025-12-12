@@ -54,13 +54,7 @@ function goToPanier() {
   </div>
 
   <!-- Bouton panier flottant (hors du footer) : réel bouton fixe en bas à droite de l'écran -->
-  <button
-    v-if="panierStore && panierStore.panier && panierStore.panier.items && panierStore.panier.items.length > 0"
-    class="go-panier"
-    @click="goToPanier"
-    :aria-label="t('voir_panier') || 'Voir le panier'">
-    {{ (t('voir_panier') || 'PANIER').toUpperCase() }}
-  </button>
+
 </template>
 
 <style scoped>

@@ -15,8 +15,6 @@
     { id: 1, name: t('pageTitleAccueil'), to: { name: 'accueil' } },
     { id: 2, name: t('pageTitleProgrammation'), to: { name: 'programmation' } },
     { id: 3, name: t('pageTitleBilletterie'), to: { name: 'billetterie' } },
-    { id: 4, name: t('pageTitleStands'), to: { name: 'stands' } },
-    { id: 5, name: t('pageTitleClassements'), to: { name: 'classements' } }
   ]);
 
   function logout() {
@@ -37,8 +35,7 @@
           <li>
             <router-link :to="page.to">{{ page.name.toUpperCase() }}</router-link>
           </li>
-          <!-- insère le lien admin juste après la page avec id === 5 (Classements) -->
-          <li v-if="page.id === 5 && userStore.currentUser && userStore.currentUser.role === 'admin'">
+          <li v-if="page.id === 3 && userStore.currentUser && userStore.currentUser.role === 'admin'">
             <router-link :to="{ name: 'gerer-presta' }">{{ 'GÉRER PRESTATAIRES' }}</router-link>
           </li>
         </template>
@@ -52,7 +49,6 @@
           <span class="user-name">{{ userStore.currentUser.name }}</span>
           <button class="logout-btn" @click="logout">{{ $t('logout') || 'Déconnexion' }}</button>
         </div>
-        <!-- (le lien de demande prestataire est affiché dans la nav centrale à côté de 'Classements') -->
       </template>
       <template v-else>
         <router-link class="login-btn" :to="{ name: 'login' }">{{ $t('login') }}</router-link>

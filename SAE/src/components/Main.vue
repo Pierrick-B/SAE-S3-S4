@@ -25,16 +25,20 @@ const { t } = useI18n()
     </div>
     <div class="misc">
       <div class="misc-item">
-        <div class="leaderboard">
-          <img src="../images/podium.jpg">
-          <p class="titre">{{ $t('leaderboard') }}</p>
-        </div>
+        <router-link class="leaderboard" :to="{ name: 'classements' }">
+          <div class="leaderboard">
+            <img src="../images/podium.jpg">
+            <p class="titre">{{ $t('leaderboard') }}</p>
+          </div>
+        </router-link>
       </div>
-      <div class="misc-item">  
-        <img src="../images/stand.jpg">
-        <div class="stands">
-          <p class="titre">{{ $t('stands') }}</p>
-        </div>
+      <div class="misc-item">
+        <router-link class="stands" :to="{ name: 'stands' }">
+          <img src="../images/stand.jpg">
+          <div class="stands">
+            <p class="titre">{{ $t('stands') }}</p>
+          </div>
+        </router-link>
       </div>
       <div class="misc-item">
         <router-link class="carte" :to="{ name: 'map' }">
